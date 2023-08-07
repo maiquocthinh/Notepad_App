@@ -1,4 +1,4 @@
-import sequelize from '../database/sequelize';
+import sequelize from './sequelize';
 
 export default async () => {
 	try {
