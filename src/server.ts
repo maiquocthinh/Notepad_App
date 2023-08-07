@@ -1,6 +1,13 @@
-import app from "./app"
-import env from "@utils/env"
+import app from './app';
+import env from '@utils/env';
+import postgresInit from './database/postgres.init';
 
-app.listen(env.PORT, () => {
-    console.log(`⚡[Server]: Server is running at http://localhost:${env.PORT}`)
-})
+const { PORT } = env;
+
+(async () => {
+	await postgresInit();
+
+	app.listen(PORT, () => {
+		console.log(`⚡[Server]: Server is running at http://localhost:${PORT}`);
+	});
+})();

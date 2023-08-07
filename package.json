@@ -18,6 +18,8 @@
     "@types/express": "^4.17.17",
     "@types/morgan": "^1.9.4",
     "@types/node": "^20.4.7",
+    "@types/pg": "^8.10.2",
+    "@types/sequelize": "^4.28.15",
     "cpy-cli": "^5.0.0",
     "nodemon": "^3.0.1",
     "rimraf": "^5.0.1",
@@ -36,6 +38,10 @@
     "envalid": "^7.3.1",
     "express": "^4.18.2",
     "helmet": "^7.0.0",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "pg": "^8.11.2",
+    "reflect-metadata": "^0.1.13",
+    "sequelize": "^6.32.1",
+    "sequelize-typescript": "^2.1.5"
   }
 }
