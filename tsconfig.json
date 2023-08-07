@@ -1,0 +1,48 @@
+{
+  "compilerOptions": {
+    "target": "ES2015",
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+    "baseUrl": "./",
+    "resolveJsonModule": true,
+    "outDir": "./dist",
+    "removeComments": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "noImplicitAny": true,
+    "skipLibCheck": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "paths": {
+      "@models/*": [
+        "./src/models/*"
+      ],
+      "@controllers/*": [
+        "./src/controllers/*"
+      ],
+      "@middlewares/*": [
+        "./src/middlewares/*"
+      ],
+      "@utils/*": [
+        "./src/utils/*"
+      ],
+    },
+    "typeRoots": [
+      "./node_modules/@types",
+      "./src/types"
+    ],
+  },
+  "exclude": [
+    "node_modules",
+    "/**/dist/*"
+  ],
+  "include": [
+    "./src/**/*"
+  ],
+  "ts-node": {
+    "require": [
+      "tsconfig-paths/register"
+    ]
+  },
+}
