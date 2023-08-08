@@ -1,3 +1,63 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+* {
+	box-sizing: border-box;
+	padding: 0;
+	margin: 0;
+}
+
+/* Custom Scroll */
+::-webkit-scrollbar {
+	width: 6px;
+	height: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+	@apply bg-gray-300;
+}
+
+::-webkit-scrollbar-track {
+	@apply bg-gray-100;
+}
+
+.c-input {
+	@apply w-full h-9 px-2 outline-none rounded border-solid border-2 border-slate-300 focus:border-teal-600;
+}
+
+.c-a {
+	@apply underline cursor-pointer hover:text-teal-600 transition duration-500;
+}
+
+.c-main-area {
+	@apply bg-white p-4 md:p-8 shadow-md mx-4 rounded;
+}
+
+.c-tab {
+	@apply inline-flex items-center py-3 px-8 font-semibold outline-none transition duration-300;
+}
+
+.c-tab.active {
+	@apply border-b-4 border-solid border-b-teal-600 bg-gray-300;
+}
+
+.c-tab-content {
+	@apply hidden transition duration-300;
+}
+
+.c-tab-content.active {
+	@apply block;
+}
+
+.c-btn {
+	@apply inline-block bg-zinc-400 text-white px-4 py-1 rounded cursor-pointer hover:bg-teal-600 transition duration-500;
+}
+
+.c-btn-outline {
+	@apply inline-flex items-center gap-1 bg-white border-1 border-solid text-base border-zinc-500 shadow px-3 py-1 rounded cursor-pointer hover:text-teal-600 hover:border-teal-600;
+}
+
+.c-btn-outline-sm {
+	@apply inline-flex items-center gap-1 bg-white border-1 border-solid border-zinc-500 shadow px-2 rounded-sm cursor-pointer hover:text-teal-600 hover:border-teal-600;
+}
