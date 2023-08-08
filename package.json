@@ -8,7 +8,8 @@
     "copy-views": "yarn cpy ./src/views/**/* ./dist/views",
     "copy-public": "yarn cpy ./src/public/**/* ./dist/public",
     "build": "yarn clean-build && tsc && tsc-alias && yarn copy-views && yarn copy-public",
-    "start": "node ./dist/server.js"
+    "start": "node ./dist/server.js",
+    "tailwind": "tailwind build -i ./src/public/tailwind.css -o ./src/public/style.css -w"
   },
   "license": "MIT",
   "devDependencies": {
@@ -21,9 +22,12 @@
     "@types/node": "^20.4.7",
     "@types/pg": "^8.10.2",
     "@types/sequelize": "^4.28.15",
+    "autoprefixer": "^10.4.14",
     "cpy-cli": "^5.0.0",
     "nodemon": "^3.0.1",
+    "postcss": "^8.4.27",
     "rimraf": "^5.0.1",
+    "tailwindcss": "^3.3.3",
     "ts-node": "^10.9.1",
     "tsc": "^2.0.4",
     "tsc-alias": "^1.8.7",
