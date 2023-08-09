@@ -1,11 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Code</title>
-</head>
-<body>
-    <h1>Code</h1>
-</body>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="/css/style.css">
+		<title>Code Preview</title>
+	</head>
+	<body class="bg-slate-100 font-mono text-zinc-500">
+		<div class="m-auto my-8 max-w-5xl h-full">
+			<div class="c-main-area border-solid border-1 border-gray-300">
+				<div class="-m-1 sm:-m-2 md:-m-5 flex flex-col h-[106%]">
+					<div class="flex justify-between items-center">
+						<h3 class="text-lg inline-flex items-center gap-1 text-zinc-500 hover:text-teal-600 cursor-default transition duration-500">
+							<svg class="w-6 h-6" fill="currentColor" viewBox="0 0 52 52" enable-background="new 0 0 52 52" xml:space="preserve"><g stroke-width="0"></g><g stroke-linecap="round" stroke-linejoin="round"></g><g> <path d="M41.4,39.7l-0.9,0.9c-1,1-2.3,1.5-3.7,1.5h-2.6c-2.4,0-5-1.9-5-5.2v-2.5c0-2,0.9-3.2,1.4-3.9l10.8-11 c0.3-0.3,0.6-1,0.6-1.4V9.8C42,7.2,39.8,5,37.2,5H11.6C9,5,6.8,7.4,6.8,9.8H5.2C3.4,9.8,2,11.3,2,13.1s1.4,3.2,3.2,3.2h1.6v6.5H5.2 C3.4,22.8,2,24.2,2,26s1.4,3.2,3.2,3.2h1.6v6.5H5.2c-1.8,0-3.2,1.5-3.2,3.2c0,1.8,1.4,3.2,3.2,3.2h1.6c0,3.2,2.2,4.8,4.8,4.8H30h7.2 c2.6,0,4.8-2.2,4.8-4.8V40C42,39.5,41.8,39.4,41.4,39.7z M33.2,17.1c0,0.9-0.7,1.6-1.6,1.6h-16c-0.9,0-1.6-0.7-1.6-1.6v-1.6 c0-0.9,0.7-1.6,1.6-1.6h16c0.9,0,1.6,0.7,1.6,1.6V17.1z M26,36.5c0,0.9-0.7,1.6-1.6,1.6h-8.8c-0.9,0-1.6-0.7-1.6-1.6v-1.6 c0-0.9,0.7-1.6,1.6-1.6h8.8c0.9,0,1.6,0.7,1.6,1.6V36.5z M28.4,26.8c0,0.9-0.7,1.6-1.6,1.6H15.6c-0.9,0-1.6-0.7-1.6-1.6v-1.6 c0-0.9,0.7-1.6,1.6-1.6h11.2c0.9,0,1.6,0.7,1.6,1.6V26.8z"></path> <path d="M49.5,22.4l-1-1c-0.6-0.6-1.6-0.6-2.2,0L34.1,34C34,34,34,34.2,34,34.2v2.7c0,0.2,0,0.4,0.2,0.4h2.6 c0.1,0,0.2-0.1,0.3-0.1l12.3-12.4C50.2,24.1,50.2,23.1,49.5,22.4z"></path> </g></svg>
+							<span class="font-medium">Note<b>Pad</b></span>
+						</h3>
+						<small>Written by <b>Quocthinh</b></small>
+					</div>
+					<hr class="mt-2 mb-4">
+					<div class="flex-grow">
+						<pre class="whitespace-nowrap min-h-[400px]" id="pre-text">
+							<code class="font-mono">
+								<ol class="list-decimal flex flex-col text-gray-400 pl-10 ">
+									<li><div class="text-gray-800">const messages = "hello world";</div></li>
+									<li><div class="text-gray-800">console.log(messages)</div></li>
+								</ol>
+							</code>
+						</pre>
+					</div>
+					<hr class="my-4">
+					<div>
+						<span class="c-btn-outline-sm float-right" onclick="copyAll('pre-text')">
+							<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none"><g stroke-width="0"></g><g stroke-linecap="round" stroke-linejoin="round"></g><g> <path d="M16 12.9V17.1C16 20.6 14.6 22 11.1 22H6.9C3.4 22 2 20.6 2 17.1V12.9C2 9.4 3.4 8 6.9 8H11.1C14.6 8 16 9.4 16 12.9Z" fill="currentColor"></path> <path d="M17.0998 2H12.8998C9.81668 2 8.37074 3.09409 8.06951 5.73901C8.00649 6.29235 8.46476 6.75 9.02167 6.75H11.0998C15.2998 6.75 17.2498 8.7 17.2498 12.9V14.9781C17.2498 15.535 17.7074 15.9933 18.2608 15.9303C20.9057 15.629 21.9998 14.1831 21.9998 11.1V6.9C21.9998 3.4 20.5998 2 17.0998 2Z" fill="currentColor"></path> </g></svg>
+							Copy All
+						</span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script src="/js/app.js"></script>
+	</body>
 </html>

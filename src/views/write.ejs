@@ -1,11 +1,136 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Write</title>
-</head>
-<body>
-    <h1>Write</h1>
-</body>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="/css/style.css">
+		<title>Write Note</title>
+	</head>
+	<body class="bg-slate-100 font-mono text-zinc-500">
+		<div class="m-auto my-8 max-w-5xl h-full">
+			<div class="c-main-area border-solid border-1 border-gray-300">
+				<div class="-m-1 sm:-m-2 md:-m-5 flex flex-col h-[106%]">
+					<div class="flex justify-between items-center">
+						<h3 class="text-lg inline-flex items-center gap-1 text-zinc-500 hover:text-teal-600 cursor-default transition duration-500">
+							<svg class="w-6 h-6" fill="currentColor" viewBox="0 0 52 52" enable-background="new 0 0 52 52" xml:space="preserve"><g stroke-width="0"></g><g stroke-linecap="round" stroke-linejoin="round"></g><g> <path d="M41.4,39.7l-0.9,0.9c-1,1-2.3,1.5-3.7,1.5h-2.6c-2.4,0-5-1.9-5-5.2v-2.5c0-2,0.9-3.2,1.4-3.9l10.8-11 c0.3-0.3,0.6-1,0.6-1.4V9.8C42,7.2,39.8,5,37.2,5H11.6C9,5,6.8,7.4,6.8,9.8H5.2C3.4,9.8,2,11.3,2,13.1s1.4,3.2,3.2,3.2h1.6v6.5H5.2 C3.4,22.8,2,24.2,2,26s1.4,3.2,3.2,3.2h1.6v6.5H5.2c-1.8,0-3.2,1.5-3.2,3.2c0,1.8,1.4,3.2,3.2,3.2h1.6c0,3.2,2.2,4.8,4.8,4.8H30h7.2 c2.6,0,4.8-2.2,4.8-4.8V40C42,39.5,41.8,39.4,41.4,39.7z M33.2,17.1c0,0.9-0.7,1.6-1.6,1.6h-16c-0.9,0-1.6-0.7-1.6-1.6v-1.6 c0-0.9,0.7-1.6,1.6-1.6h16c0.9,0,1.6,0.7,1.6,1.6V17.1z M26,36.5c0,0.9-0.7,1.6-1.6,1.6h-8.8c-0.9,0-1.6-0.7-1.6-1.6v-1.6 c0-0.9,0.7-1.6,1.6-1.6h8.8c0.9,0,1.6,0.7,1.6,1.6V36.5z M28.4,26.8c0,0.9-0.7,1.6-1.6,1.6H15.6c-0.9,0-1.6-0.7-1.6-1.6v-1.6 c0-0.9,0.7-1.6,1.6-1.6h11.2c0.9,0,1.6,0.7,1.6,1.6V26.8z"></path> <path d="M49.5,22.4l-1-1c-0.6-0.6-1.6-0.6-2.2,0L34.1,34C34,34,34,34.2,34,34.2v2.7c0,0.2,0,0.4,0.2,0.4h2.6 c0.1,0,0.2-0.1,0.3-0.1l12.3-12.4C50.2,24.1,50.2,23.1,49.5,22.4z"></path> </g></svg>
+							<span class="font-medium">Note<b>Pad</b></span>
+						</h3>
+						<div class="flex items-center gap-8 mr-6">
+							<a class="cursor-pointer hover:text-teal-600" href="#">
+								<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none"><g stroke-width="0"></g><g stroke-linecap="round" stroke-linejoin="round"></g><g><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 15V5a2 2 0 0 0-2-2h-7m9 12v.172a2 2 0 0 1-.586 1.414l-3.828 3.828a2 2 0 0 1-1.414.586H15m6-6h-4a2 2 0 0 0-2 2v4m0 0H5a2 2 0 0 1-2-2v-7m10-5h4m-7 4h7M7 15h4M6 3v3m0 3V6m0 0h3M6 6H3"></path></g></svg>
+							</a>
+							<span class="cursor-pointer hover:text-teal-600" onclick="toggleModal('modal_password')">
+								<svg class="w-5 h-5" viewBox="0 0 48 48" fill="currentColor"><g stroke-width="0"></g><g stroke-linecap="round" stroke-linejoin="round"></g><g> <g id="Layer_2" data-name="Layer 2"> <g id="invisible_box" data-name="invisible box"> <rect width="48" height="48" fill="none"></rect> </g> <g id="Layer_7" data-name="Layer 7"> <g> <path d="M39,18H35V13A11,11,0,0,0,24,2H22A11,11,0,0,0,11,13v5H7a2,2,0,0,0-2,2V44a2,2,0,0,0,2,2H39a2,2,0,0,0,2-2V20A2,2,0,0,0,39,18ZM15,13a7,7,0,0,1,7-7h2a7,7,0,0,1,7,7v5H15ZM37,42H9V22H37Z"></path> <circle cx="15" cy="32" r="3"></circle> <circle cx="23" cy="32" r="3"></circle> <circle cx="31" cy="32" r="3"></circle> </g> </g> </g> </g></svg>
+							</span>
+							<span class="cursor-pointer hover:text-teal-600" onclick="toggleModal('modal_url')">
+								<svg class="w-5 h-5" viewBox="0 0 33 33" version="1.1" fill="currentColor"><g stroke-width="0"></g><g stroke-linecap="round" stroke-linejoin="round"></g><g><g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage"> <g id="Icon-Set-Filled" sketch:type="MSLayerGroup" transform="translate(-154.000000, -724.000000)" fill="currentColor"> <path d="M184.785,727.613 L183.355,726.184 C181.775,724.604 178.58,724.42 177,726 L170,733 C168.944,734.056 169.095,735.881 169.451,737.228 L179,728 C179.79,727.21 181.21,728.21 182,729 C182.79,729.79 183.79,731.21 183,732 L173.741,741.518 C175.088,741.873 176.944,742.056 178,741 L185,734 C186.58,732.421 186.365,729.193 184.785,727.613 L184.785,727.613 Z M162,753 C161.21,753.79 159.79,752.79 159,752 C158.21,751.21 157.21,749.79 158,749 L167.228,739.451 C165.881,739.095 164.056,738.944 163,740 L156,747 C154.42,748.58 154.604,751.775 156.184,753.354 L157.614,754.785 C159.193,756.365 162.42,756.58 164,755 L171,748 C172.056,746.944 171.874,745.088 171.518,743.741 L162,753 L162,753 Z M173.702,737.282 C173.307,736.888 172.667,736.888 172.272,737.282 L167.267,742.287 C166.872,742.683 166.872,743.322 167.267,743.718 C167.662,744.112 168.302,744.112 168.697,743.718 L173.702,738.713 C174.097,738.317 174.097,737.678 173.702,737.282 L173.702,737.282 Z" id="permalink" sketch:type="MSShapeGroup"> </path> </g> </g> </g></svg>
+							</span>
+							<a class="cursor-pointer hover:text-teal-600" href="/src/panel.html">
+								<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none"><g stroke-width="0"></g><g stroke-linecap="round" stroke-linejoin="round"></g><g> <path fill-rule="evenodd" clip-rule="evenodd" d="M12 5C10.3431 5 9 6.34315 9 8C9 9.65685 10.3431 11 12 11C13.6569 11 15 9.65685 15 8C15 6.34315 13.6569 5 12 5ZM7 8C7 5.23858 9.23858 3 12 3C14.7614 3 17 5.23858 17 8C17 10.7614 14.7614 13 12 13C9.23858 13 7 10.7614 7 8ZM7.45609 16.7264C6.40184 17.1946 6 17.7858 6 18.5C6 18.7236 6.03976 18.8502 6.09728 18.942C6.15483 19.0338 6.29214 19.1893 6.66219 19.3567C7.45312 19.7145 9.01609 20 12 20C14.9839 20 16.5469 19.7145 17.3378 19.3567C17.7079 19.1893 17.8452 19.0338 17.9027 18.942C17.9602 18.8502 18 18.7236 18 18.5C18 17.7858 17.5982 17.1946 16.5439 16.7264C15.4614 16.2458 13.8722 16 12 16C10.1278 16 8.53857 16.2458 7.45609 16.7264ZM6.64442 14.8986C8.09544 14.2542 10.0062 14 12 14C13.9938 14 15.9046 14.2542 17.3556 14.8986C18.8348 15.5554 20 16.7142 20 18.5C20 18.9667 19.9148 19.4978 19.5973 20.0043C19.2798 20.5106 18.7921 20.8939 18.1622 21.1789C16.9531 21.7259 15.0161 22 12 22C8.98391 22 7.04688 21.7259 5.83781 21.1789C5.20786 20.8939 4.72017 20.5106 4.40272 20.0043C4.08524 19.4978 4 18.9667 4 18.5C4 16.7142 5.16516 15.5554 6.64442 14.8986Z" fill="currentColor"></path> </g></svg>
+							</a>
+						</div>
+					</div>
+					<hr class="mt-2 mb-4">
+					<div class="flex-grow relative">
+						<textarea class="w-full min-h-[400px] outline-none resize-none mx-1 text-base leading-none" spellcheck="false" id="note_textarea"></textarea>
+						<div class="flex items-center gap-1 absolute bottom-0 right-0">
+							<button class="c-btn-outline-sm py-1" title="Full Screen" onclick="toggleFullscreen()">
+								<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none"><g stroke-width="0"></g><g stroke-linecap="round" stroke-linejoin="round"></g><g> <g clip-path="url(#clip0_15_784)"> <rect width="24" height="24" fill="white"></rect> <path d="M13.8284 13.8284L20.8995 20.8995M20.8995 20.8995L20.7816 15.1248M20.8995 20.8995L15.1248 20.7816" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M9.89948 13.8284L2.82841 20.8995M2.82841 20.8995L8.60312 20.7816M2.82841 20.8995L2.94626 15.1248" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M13.8284 9.8995L20.8995 2.82843M20.8995 2.82843L15.1248 2.94629M20.8995 2.82843L20.7816 8.60314" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M9.89947 9.89951L2.8284 2.82844M2.8284 2.82844L2.94626 8.60315M2.8284 2.82844L8.60311 2.94629" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></path> </g> <defs> <clipPath id="clip0_15_784"> <rect width="24" height="24" fill="white"></rect> </clipPath> </defs> </g></svg>
+							</button>
+							<button class="c-btn-outline-sm py-1" title="Increase font-size" onclick="increaseFontsize()">
+								<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none"><g stroke-width="0"></g><g stroke-linecap="round" stroke-linejoin="round"></g><g> <path d="M6 12H18M12 6V18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+							</button>
+							<button class="c-btn-outline-sm py-1" title="Decrease font-size" onclick="decreaseFontsize()">
+								<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none"><g stroke-width="0"></g><g stroke-linecap="round" stroke-linejoin="round"></g><g> <path d="M6 12L18 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+							</button>
+						</div>
+					</div>
+					<hr class="my-4">
+					<div class="flex flex-col items-center gap-1">
+						<div class="flex items-center gap-2">
+							<button class="c-btn-outline-sm text-sm">
+								<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" transform="matrix(1, 0, 0, 1, 0, 0)rotate(45)"><g stroke-width="0"></g><g stroke-linecap="round" stroke-linejoin="round"></g><g> <g clip-path="url(#clip0_15_96)"> <rect width="24" height="24" fill="white"></rect> <path d="M16.2427 12L19.0711 9.17159C19.0711 9.17159 20.4853 7.75737 18.364 5.63606C16.2427 3.51475 14.8285 4.92895 14.8285 4.92895C14.8285 4.92895 12.7071 7.05027 11.2929 8.46448C9.87873 9.87869 9.87873 11.2929 10.5858 12" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M7.75745 12L4.92902 14.8284C4.92902 14.8284 3.5148 16.2426 5.63613 18.364C7.75745 20.4853 9.17166 19.0711 9.17166 19.0711C9.17166 19.0711 10.9394 17.3033 12.3536 15.8891C13.7679 14.4749 14.1214 12.7071 13.4143 12" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></path> </g> <defs> <clipPath id="clip0_15_96"> <rect width="24" height="24" fill="white"></rect> </clipPath> </defs> </g></svg>
+								Editable Link
+							</button>
+							<div class="dropdown relative flex">
+								<button class="c-btn-outline-sm text-sm flex-grow" onclick="toggleDropdown(event)">
+									<svg class="w-4 h-4" viewBox="0 0 512 512" xml:space="preserve" fill="currentCOlor"><g stroke-width="0"></g><g stroke-linecap="round" stroke-linejoin="round"></g><g> <style type="text/css"> .st0{fill:currentColor;} </style> <g> <path class="st0" d="M512,255.995L277.045,65.394v103.574c-17.255,0-36.408,0-57.542,0c-208.59,0-249.35,153.44-201.394,266.128 c9.586-103.098,142.053-100.701,237.358-100.701c7.247,0,14.446,0,21.578,0v112.211L512,255.995z"></path> </g> </g></svg>
+									Share Link
+								</button>
+								<div class="dropdown_box flex flex-col gap-2 min-w-[140px] w-fit z-10 shadow rounded whitespace-nowrap bg-white border-solid border-1 border-gray-400 absolute bottom-7 left-0 px-3 py-2 hidden">
+									<a class="c-a text-sm" href="#" target="_blank">Share(only view)</a>
+									<a class="c-a text-sm" href="#" target="_blank">Raw</a>
+									<a class="c-a text-sm" href="#" target="_blank">Markdown</a>
+									<a class="c-a text-sm" href="#" target="_blank">Code</a>
+								</div>
+								<div class="dropdown_overplay z-9 w-[100vw] h-[100vh] fixed top-0 left-0 bg-transparent hidden" onclick="toggleDropdown(event)"></div>
+							</div>
+						</div>
+						<p class="text-sm">
+							<b>Words:</b> <span id="word_count">0</span> | <b>Chars:</b> <span id="char_count">0</span> | <b>Views:</b> <span id="view_count">0</span>
+						</p>
+						<small><b>Last Updated:</b> 2 Hours ago</small>
+					</div>
+				</div>
+
+				<!-- Modal Password Options -->
+				<div id="modal_password">
+					<div class="modal_popup hidden min-w-[300px] z-10 bg-gray-100 fixed top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded shadow drop-shadow px-4 py-2">
+						<!-- header -->
+						<div class="flex justify-between">
+							<h3 class="text-base">Password Options</h3>
+							<span class="modal_close c-btn-sm">&times;</span>
+						</div>
+						<!-- body -->
+						<hr class="my-3">
+						<div>
+							<!-- Password no set -->
+							<!-- <input class="c-input" placeholder="Password" type="text"> -->
+							<!-- Password set. -->
+							<div class="flex justify-evenly">
+								<button class="c-btn">
+									<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none"><g stroke-width="0"></g><g stroke-linecap="round" stroke-linejoin="round"></g><g> <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5"></circle> <path d="M15 12H9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path> </g></svg>
+									Remove
+								</button>
+								<button class="c-btn">
+									<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" ><g stroke-width="0"></g><g stroke-linecap="round" stroke-linejoin="round"></g><g> <path d="M21 12L13 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M18 15L20.913 12.087V12.087C20.961 12.039 20.961 11.961 20.913 11.913V11.913L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M16 5V4.5V4.5C16 3.67157 15.3284 3 14.5 3H5C3.89543 3 3 3.89543 3 5V19C3 20.1046 3.89543 21 5 21H14.5C15.3284 21 16 20.3284 16 19.5V19.5V19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+									Logout
+								</button>
+							</div>
+						</div>
+						<hr class="my-3">
+						<!-- footer -->
+						<!-- <div class="flex justify-between">
+							<button class="modal_close c-btn-outline">Cancel</button>
+							<button class="c-btn">Set</button>
+						</div> -->
+					</div>
+					<div class="modal_overplay modal_close hidden z-9 w-[100vw] h-[100vh] fixed top-0 left-0 bg-transparent"></div>
+				</div>
+				<!-- Modal change url -->
+				<div id="modal_url">
+					<div class="modal_popup hidden min-w-[300px] z-10 bg-gray-100 fixed top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded shadow drop-shadow px-4 py-2">
+						<!-- header -->
+						<div class="flex justify-between">
+							<h3 class="text-base">Change Url</h3>
+							<span class="modal_close c-btn-sm">&times;</span>
+						</div>
+						<!-- body -->
+						<hr class="my-3">
+						<div>
+							<input class="c-input" placeholder="URL" type="text">
+						</div>
+						<hr class="my-3">
+						<!-- footer -->
+						<div class="flex justify-between">
+							<button class="modal_close c-btn-outline">Cancel</button>
+							<button class="c-btn">Change</button>
+						</div>
+					</div>
+					<div class="modal_overplay modal_close hidden z-9 w-[100vw] h-[100vh] fixed top-0 left-0 bg-transparent"></div>
+				</div>
+			</div>
+		</div>
+		<script src="/js/app.js"></script>
+	</body>
 </html>
