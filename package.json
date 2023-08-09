@@ -4,12 +4,12 @@
   "main": "./src/server.ts",
   "scripts": {
     "dev": "nodemon",
-    "clean-build": "yarn rimraf ./dist",
-    "copy-views": "yarn cpy ./src/views/**/* ./dist/views",
-    "copy-public": "yarn cpy ./src/public/**/* ./dist/public",
+    "clean-build": "rimraf ./dist",
+    "copy-views": "cpy ./src/views/**/* ./dist/views",
+    "copy-public": "cpy ./src/public/**/* ./dist/public && rimraf ./dist/public/css/tailwind.css",
     "build": "yarn clean-build && tsc && tsc-alias && yarn copy-views && yarn copy-public",
     "start": "node ./dist/server.js",
-    "tailwind": "tailwind build -i ./src/public/tailwind.css -o ./src/public/style.css -w"
+    "tailwind": "tailwind build -i ./src/public/css/tailwind.css -o ./src/public/css/style.css -w"
   },
   "license": "MIT",
   "devDependencies": {
