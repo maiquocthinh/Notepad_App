@@ -49,6 +49,7 @@
     "pg": "^8.11.2",
     "reflect-metadata": "^0.1.13",
     "sequelize": "^6.32.1",
-    "sequelize-typescript": "^2.1.5"
+    "sequelize-typescript": "^2.1.5",
+    "svg-captcha": "^1.4.0"
   }
 }
