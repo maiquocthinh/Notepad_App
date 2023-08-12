@@ -30,6 +30,9 @@
       "@database/*": [
         "./src/database/*"
       ],
+      "@config/*": [
+        "./src/config/*"
+      ],
     },
     "typeRoots": [
       "./node_modules/@types",
@@ -48,4 +51,7 @@
       "tsconfig-paths/register"
     ]
   },
+  "files": [
+    "./src/types/custom.d.ts"
+  ]
 }

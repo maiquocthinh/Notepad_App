@@ -4,9 +4,11 @@ import morgan from 'morgan';
 import compression from 'compression';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
+import session from 'express-session';
 import path from 'path';
 import env from '@utils/env';
 import mountRoutes from './routes';
+import sessionStore from '@config/sessionStore';
 
 const app: Express = express();
 
@@ -21,6 +23,18 @@ app.use(
 	cors({
 		credentials: true,
 		origin: env.CORS_ORIGIN,
+	}),
+);
+app.use(
+	session({
+		secret: env.SESSION_SECRET,
+		resave: false,
+		saveUninitialized: true,
+		cookie: {
+			httpOnly: true,
+			maxAge: 2 * 60 * 60 * 1000, // 2 hours
+		},
+		store: sessionStore,
 	}),
 );
 app.use(express.static(path.join(__dirname, 'public')));
