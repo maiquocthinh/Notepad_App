@@ -11,13 +11,19 @@ class User extends Model {
 	@Column(DataType.STRING(12))
 	id!: string;
 
-	@Unique
-	@Column(DataType.STRING)
-	username!: string;
-
-	@Unique
+	@Unique({
+		name: 'unique_email_constraint',
+		msg: 'This email already exists. Please use another email.',
+	})
 	@Column(DataType.STRING)
 	email!: string;
+
+	@Unique({
+		name: 'unique_username_constraint',
+		msg: 'This username already exists. Please choose another username.',
+	})
+	@Column(DataType.STRING)
+	username!: string;
 
 	@Default('https://i.imgur.com/iNsPoYP.jpg')
 	@Column(DataType.STRING)
