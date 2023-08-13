@@ -24,6 +24,9 @@
       "@middlewares/*": [
         "./src/middlewares/*"
       ],
+      "@services/*": [
+        "./src/services/*"
+      ],
       "@utils/*": [
         "./src/utils/*"
       ],

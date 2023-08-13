@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import svgCaptcha, { CaptchaObj } from 'svg-captcha';
 import bcrypt from 'bcryptjs';
-import { createAccount, handleLogin } from 'src/services/account.services';
+import { createAccount, handleLogin } from '@services/account.services';
 
 // ╔════════════╗
 // ║	PAGE	║

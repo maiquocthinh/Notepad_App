@@ -12,10 +12,7 @@ const mountRoutes = (app: Express) => {
 	app.get('/code/:externalSlug', code);
 	app.get('/markdown/:externalSlug', markdown);
 	app.get('/user-backup/:backupNoteId', userBackup);
-
-	app.get('/', (_req: Request, res: Response) => {
-		res.status(200).json({ msg: 'home' });
-	});
+	app.get('/', write);
 };
 
 export default mountRoutes;
