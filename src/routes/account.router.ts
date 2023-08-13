@@ -2,6 +2,7 @@ import { Router, Request, Response } from 'express';
 
 import { accountController } from '@controllers/index';
 import { loginPost, registerPost } from '@controllers/account.controller';
+import { checkLogin } from '@middlewares/auth.middleware';
 
 const { login, register, logout, forgot, resetPassword, panel, captcha } = accountController;
 
@@ -14,7 +15,7 @@ router.post('/register', registerPost);
 router.get('/logout', logout);
 router.get('/forgot', forgot);
 router.get('/reset-password', resetPassword);
-router.get('/panel', panel);
+router.get('/panel', checkLogin, panel);
 router.get('/captcha', captcha);
 router.get('*', (req: Request, res: Response) => {
 	return res.redirect('/account/panel');
