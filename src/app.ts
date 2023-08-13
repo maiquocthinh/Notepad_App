@@ -9,6 +9,7 @@ import path from 'path';
 import env from '@utils/env';
 import mountRoutes from './routes';
 import sessionStore from '@config/sessionStore';
+import useragent from 'express-useragent';
 
 const app: Express = express();
 
@@ -19,6 +20,7 @@ app.use(helmet());
 app.use(morgan('dev'));
 app.use(compression());
 app.use(cookieParser());
+app.use(useragent.express());
 app.use(
 	cors({
 		credentials: true,
@@ -29,7 +31,7 @@ app.use(
 	session({
 		secret: env.SESSION_SECRET,
 		resave: false,
-		saveUninitialized: true,
+		saveUninitialized: false,
 		cookie: {
 			httpOnly: true,
 			maxAge: 2 * 60 * 60 * 1000, // 2 hours
