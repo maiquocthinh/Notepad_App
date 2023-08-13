@@ -1,4 +1,5 @@
-import { Column, DataType, Model, PrimaryKey, Table } from 'sequelize-typescript';
+import { Column, DataType, Model, PrimaryKey, Table, ForeignKey, BelongsTo } from 'sequelize-typescript';
+import User from './user.model';
 
 @Table
 class Session extends Model {
@@ -12,8 +13,12 @@ class Session extends Model {
 	@Column(DataType.TEXT)
 	data?: string;
 
+	@ForeignKey(() => User)
 	@Column(DataType.STRING(12))
 	userId!: string;
+
+	@BelongsTo(() => User)
+	user!: User;
 }
 
 export default Session;

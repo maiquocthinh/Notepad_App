@@ -1,8 +1,9 @@
 import { Column, DataType, Model, PrimaryKey, Table, HasMany, Default, BeforeCreate, Unique } from 'sequelize-typescript';
 import Note from './note.model';
+import BackupNote from './backupNote.model';
+import Session from './session.model';
 import bcrypt from 'bcryptjs';
 import { createUserId } from '@utils/nanoid';
-import BackupNote from './backupNote.model';
 
 @Table
 class User extends Model {
@@ -37,6 +38,9 @@ class User extends Model {
 
 	@HasMany(() => BackupNote)
 	backupNotes!: BackupNote[];
+
+	@HasMany(() => Session)
+	sessions!: Session[];
 
 	@BeforeCreate
 	static hashPasswordBeforeCreate(user: User) {
