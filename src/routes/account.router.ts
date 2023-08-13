@@ -1,13 +1,14 @@
 import { Router, Request, Response } from 'express';
 
 import { accountController } from '@controllers/index';
-import { registerPost } from '@controllers/account.controller';
+import { loginPost, registerPost } from '@controllers/account.controller';
 
 const { login, register, logout, forgot, resetPassword, panel, captcha } = accountController;
 
 const router = Router();
 
 router.get('/login', login);
+router.post('/login', loginPost);
 router.get('/register', register);
 router.post('/register', registerPost);
 router.get('/logout', logout);

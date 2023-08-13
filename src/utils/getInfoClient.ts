@@ -1,33 +1,33 @@
 import { Request } from 'express';
 import fetch from 'cross-fetch';
+import { SessionDataClient } from '../types/session.types';
 
-const getInfoRequest = async (req: Request) => {
-	const ip = req.ip;
-	const location = await ip2location(ip);
-	const platform = req.useragent?.platform;
-	const browser = req.useragent?.browser;
-	const deviceType = ((): string => {
-		if (req.useragent?.isMobile) {
-			return 'Mobile';
-		} else if (req.useragent?.isTablet) {
-			return 'Tablet';
-		} else {
-			return 'Desktop';
-		}
-	})();
+const getInfoClient = async (req: Request): Promise<SessionDataClient | null> => {
+	try {
+		const ip = req.ip;
+		const location = await ip2location(ip);
+		const platform = req.useragent?.platform;
+		const browser = req.useragent?.browser;
+		const deviceType = ((): string => {
+			if (req.useragent?.isMobile) {
+				return 'Mobile';
+			} else if (req.useragent?.isTablet) {
+				return 'Tablet';
+			} else {
+				return 'Desktop';
+			}
+		})();
 
-	return {
-		ip,
-		location: `${location?.countryName || 'unknown'} (${location?.regionName || 'unknown'})`,
-		platform: platform || 'unknown',
-		browser: browser || 'unknown',
-		deviceType,
-	};
-};
-
-type location = {
-	countryName: string | null;
-	regionName: string | null;
+		return {
+			ip,
+			location: `${location?.countryName || 'unknown'} (${location?.regionName || 'unknown'})`,
+			platform: platform || 'unknown',
+			browser: browser || 'unknown',
+			deviceType,
+		};
+	} catch (error) {
+		return null;
+	}
 };
 
 const ip2location = async (ip: string): Promise<location | null> => {
@@ -40,4 +40,9 @@ const ip2location = async (ip: string): Promise<location | null> => {
 	});
 };
 
-export default getInfoRequest;
+type location = {
+	countryName: string | null;
+	regionName: string | null;
+};
+
+export default getInfoClient;

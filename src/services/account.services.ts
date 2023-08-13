@@ -3,8 +3,9 @@ import bcrypt from 'bcryptjs';
 import { validateOrReject, ValidationError } from 'class-validator';
 import { plainToClass } from 'class-transformer';
 import sequelize from 'sequelize';
-import { RegisterParams } from 'src/types/account.types';
+import { LoginParams, RegisterParams } from 'src/types/account.types';
 import User from '@models/user.model';
+import getInfoClient from '@utils/getInfoClient';
 
 export const createAccount = async (req: Request, res: Response) => {
 	try {
@@ -38,6 +39,49 @@ export const createAccount = async (req: Request, res: Response) => {
 			});
 		} else {
 			return res.status(400).render('register', {
+				errors: [errors.message],
+			});
+		}
+	}
+};
+
+export const handleLogin = async (req: Request, res: Response) => {
+	try {
+		const data = plainToClass(LoginParams, req.body);
+
+		// validate
+		await validateOrReject(data);
+
+		// check user
+		const user = await User.findOne({
+			where: {
+				username: data.username,
+			},
+			attributes: ['id', 'username', 'email', 'hashPassword', 'avatar'],
+		});
+		if (!user) throw new Error('Username or Password invalid!');
+
+		// compare password
+		if (!bcrypt.compareSync(data.password, user.hashPassword || '')) throw new Error('Username or Password invalid!');
+
+		// set session
+		user.hashPassword = undefined;
+		req.session.user = user;
+		req.session.client = await getInfoClient(req);
+
+		// redirect to panel
+		return res.redirect('/account/panel');
+	} catch (errors: any) {
+		if (Array.isArray(errors) && errors.every((error) => error instanceof ValidationError)) {
+			return res.status(200).render('login', {
+				errors: errors.map((error) => error.constraints && Object.values(error.constraints)).flat(),
+			});
+		} else if (errors instanceof sequelize.ValidationError) {
+			return res.status(400).render('login', {
+				errors: errors.errors.map((err) => err.message),
+			});
+		} else {
+			return res.status(400).render('login', {
 				errors: [errors.message],
 			});
 		}

@@ -24,13 +24,18 @@ const IsMatch = (property: string, validationOptions?: ValidationOptions) => {
 	};
 };
 
-export class RegisterParams {
-	@IsEmail()
-	email!: string;
-
+export class LoginParams {
 	@IsString()
 	@MinLength(3)
 	username!: string;
+
+	@IsString()
+	password!: string;
+}
+
+export class RegisterParams extends LoginParams {
+	@IsEmail()
+	email!: string;
 
 	@IsString()
 	@MinLength(6)

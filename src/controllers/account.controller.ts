@@ -1,13 +1,20 @@
 import { Request, Response } from 'express';
 import svgCaptcha, { CaptchaObj } from 'svg-captcha';
 import bcrypt from 'bcryptjs';
-import { createAccount } from 'src/services/account.services';
+import { createAccount, handleLogin } from 'src/services/account.services';
 
 // ╔════════════╗
 // ║	PAGE	║
 // ╚════════════╝
+
+// [GET] /account/login
 export const login = async (req: Request, res: Response) => {
 	return res.status(200).render('login');
+};
+
+// [POST] /account/login
+export const loginPost = async (req: Request, res: Response) => {
+	return handleLogin(req, res);
 };
 
 // [GET] /account/register

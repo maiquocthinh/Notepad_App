@@ -1,18 +1,9 @@
 import 'express-session';
+import { SessionDataClient, SessionDataUser } from '../types/session.types';
 
 declare module 'express-session' {
 	interface SessionData {
-		user?: {
-			id: string;
-			email: string;
-			username: string;
-			avatar: string;
-		};
-		client?: {
-			address: string;
-			ip: string;
-			os: string;
-			browser: string;
-		};
+		user?: SessionDataUser;
+		client?: SessionDataClient | null;
 	}
 }
