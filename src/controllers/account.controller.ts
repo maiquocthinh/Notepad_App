@@ -9,6 +9,7 @@ import { createAccount, handleLogin } from '@services/account.services';
 
 // [GET] /account/login
 export const login = async (req: Request, res: Response) => {
+	if (req.session?.user) return res.redirect('/account/panel');
 	return res.status(200).render('login');
 };
 
@@ -19,6 +20,7 @@ export const loginPost = async (req: Request, res: Response) => {
 
 // [GET] /account/register
 export const register = async (req: Request, res: Response) => {
+	if (req.session?.user) return res.redirect('/account/panel');
 	return res.status(200).render('register');
 };
 

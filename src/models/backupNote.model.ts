@@ -6,7 +6,7 @@ import { createBackupNoteId } from '@utils/nanoid';
 class BackupNote extends Model {
 	@Default(createBackupNoteId)
 	@PrimaryKey
-	@Column(DataType.STRING(12))
+	@Column(DataType.STRING(13))
 	id!: string;
 
 	@Column(DataType.TEXT({ length: 'long' }))

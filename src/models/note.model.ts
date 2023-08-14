@@ -27,7 +27,7 @@ class Note extends Model {
 	needPassword!: boolean;
 
 	@Column(DataType.STRING)
-	hashPassword?: string;
+	hashPassword?: string | null;
 
 	@ForeignKey(() => User)
 	@Column(DataType.STRING(12))
