@@ -3,9 +3,10 @@ import bcrypt from 'bcryptjs';
 import { validateOrReject, ValidationError } from 'class-validator';
 import { plainToClass } from 'class-transformer';
 import sequelize from 'sequelize';
-import { LoginParams, RegisterParams } from 'src/types/account.types';
-import User from '@models/user.model';
+import { LoginParams, RegisterParams } from '../types/account.types';
+import { User, Note } from '@models/index';
 import getInfoClient from '@utils/getInfoClient';
+import { calculateElapsedTime } from '@utils/time';
 
 export const createAccount = async (req: Request, res: Response) => {
 	try {
@@ -86,4 +87,25 @@ export const handleLogin = async (req: Request, res: Response) => {
 			});
 		}
 	}
+};
+
+export const renderPanel = async (req: Request, res: Response) => {
+	const userId = req.session.user?.id;
+	const user = await User.findOne({
+		where: { id: userId },
+		include: [
+			{
+				model: Note,
+				attributes: ['id', 'slug', 'views', 'needPassword', 'updatedAt'],
+			},
+		],
+		order: [[{ model: Note, as: 'notes' }, 'updatedAt', 'DESC']],
+	});
+
+	return res.status(200).render('panel', {
+		notes: user?.notes.map((note) => ({
+			...note.dataValues,
+			lastUpdated: calculateElapsedTime(note.updatedAt),
+		})),
+	});
 };

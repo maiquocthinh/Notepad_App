@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import svgCaptcha, { CaptchaObj } from 'svg-captcha';
 import bcrypt from 'bcryptjs';
-import { createAccount, handleLogin } from '@services/account.services';
+import { createAccount, handleLogin, renderPanel } from '@services/account.services';
 
 // ╔════════════╗
 // ║	PAGE	║
@@ -42,7 +42,7 @@ export const resetPassword = async (req: Request, res: Response) => {
 };
 
 export const panel = async (req: Request, res: Response) => {
-	return res.status(200).render('panel');
+	return renderPanel(req, res);
 };
 
 export const captcha = async (_req: Request, res: Response) => {

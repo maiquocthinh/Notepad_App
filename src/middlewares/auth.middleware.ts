@@ -1,7 +1,6 @@
 import BackupNote from '@models/backupNote.model';
 import Note from '@models/note.model';
 import { Request, Response, NextFunction } from 'express';
-import { where } from 'sequelize';
 
 export const checkLogin = (req: Request, res: Response, next: NextFunction) => {
 	const user = req.session.user;

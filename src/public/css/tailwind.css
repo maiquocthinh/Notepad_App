@@ -22,6 +22,10 @@
 	@apply bg-gray-100;
 }
 
+.hidden {
+	display: none !important;
+}
+
 .c-input {
 	@apply w-full h-9 px-2 outline-none rounded border-solid border-2 border-slate-300 focus:border-teal-600;
 }

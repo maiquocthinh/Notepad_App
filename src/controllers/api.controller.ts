@@ -9,7 +9,7 @@ import {
 } from '@services/api.services';
 
 // ╔═══════════╗
-// ║	API	   ║
+// ║	API    ║
 // ╚═══════════╝
 
 // [POST] /api/note/set-password/:noteId
