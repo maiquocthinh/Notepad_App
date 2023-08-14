@@ -9,7 +9,7 @@ class Note extends Model {
 	@Column(DataType.STRING(12))
 	id!: string;
 
-	@Column(DataType.TEXT({ length: 'long' }))
+	@Column(DataType.TEXT)
 	content!: string;
 
 	@Unique
@@ -21,6 +21,10 @@ class Note extends Model {
 	@Default(createUniqueSlug)
 	@Column(DataType.STRING(20))
 	externalSlug!: string;
+
+	@Default(0)
+	@Column(DataType.INTEGER)
+	views!: number;
 
 	@Default(false)
 	@Column(DataType.BOOLEAN)

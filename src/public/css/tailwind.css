@@ -51,7 +51,11 @@
 }
 
 .c-btn {
-	@apply inline-block bg-zinc-400 text-white px-4 py-1 rounded cursor-pointer hover:bg-teal-600 transition duration-500;
+	@apply inline-flex items-center gap-1 bg-zinc-400 text-white px-4 py-1 rounded cursor-pointer hover:bg-teal-600 transition duration-500;
+}
+
+.c-btn-sm {
+	@apply inline-flex items-center gap-1 bg-zinc-400 text-white px-2 rounded cursor-pointer hover:bg-teal-600 transition duration-500;
 }
 
 .c-btn-outline {

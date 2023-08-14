@@ -6,6 +6,9 @@ module.exports = {
 			borderWidth: {
 				1: '1px',
 			},
+			zIndex: {
+				9: '9',
+			},
 		},
 	},
 	plugins: [],

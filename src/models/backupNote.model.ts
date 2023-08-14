@@ -9,7 +9,7 @@ class BackupNote extends Model {
 	@Column(DataType.STRING(13))
 	id!: string;
 
-	@Column(DataType.TEXT({ length: 'long' }))
+	@Column(DataType.TEXT)
 	content!: string;
 
 	@ForeignKey(() => User)
