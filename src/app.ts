@@ -16,7 +16,18 @@ const app: Express = express();
 // Express configuration
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(helmet());
+app.use(
+	helmet({
+		contentSecurityPolicy: {
+			useDefaults: false,
+			directives: {
+				'default-src': ["'self'"],
+				'script-src-attr': ["'unsafe-inline'"],
+				'img-src': ['*'],
+			},
+		},
+	}),
+);
 app.use(morgan('dev'));
 app.use(compression());
 app.use(cookieParser());
