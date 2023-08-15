@@ -126,3 +126,29 @@ function backupNote(noteId) {
 function downloadNote(noteId) {
 	window.open('/api/note/download/' + noteId, '_blank');
 }
+
+// BACKUP_NOTE DELETE
+function deleteBackupNote(backupNoteId, event) {
+	if (!confirm('Are you sure delete this note?')) return;
+
+	// fetch api to delete note
+	fetch('/api/backup-note/delete/' + backupNoteId, { method: 'DELETE' }).then(function (response) {
+		if (!response.ok) {
+			response.json().then(function (result) {
+				alert(result.error);
+			});
+		}
+
+		// remove element
+		const tr = event.target.closest('tr');
+		tr.classList.add('bg-red-100');
+		setTimeout(function () {
+			tr.remove();
+		}, 300);
+	});
+}
+
+// BACKUP_NOTE DOWNLOAD
+function downloadBackupNote(backupNoteId) {
+	window.open('/api/backup-note/download/' + backupNoteId, '_blank');
+}

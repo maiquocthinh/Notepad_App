@@ -4,7 +4,7 @@ import { validateOrReject, ValidationError } from 'class-validator';
 import { plainToClass } from 'class-transformer';
 import sequelize from 'sequelize';
 import { LoginParams, RegisterParams } from '../types/account.types';
-import { User, Note } from '@models/index';
+import { User, Note, BackupNote } from '@models/index';
 import getInfoClient from '@utils/getInfoClient';
 import { calculateElapsedTime } from '@utils/time';
 
@@ -98,14 +98,29 @@ export const renderPanel = async (req: Request, res: Response) => {
 				model: Note,
 				attributes: ['id', 'slug', 'views', 'needPassword', 'updatedAt'],
 			},
+			{
+				model: BackupNote,
+				attributes: ['id', 'updatedAt'],
+			},
 		],
-		order: [[{ model: Note, as: 'notes' }, 'updatedAt', 'DESC']],
+		order: [
+			[{ model: Note, as: 'notes' }, 'updatedAt', 'DESC'],
+			[{ model: BackupNote, as: 'backupNotes' }, 'updatedAt', 'DESC'],
+		],
 	});
 
+	const notes = user?.notes.map((note) => ({
+		...note.dataValues,
+		lastUpdated: calculateElapsedTime(note.updatedAt),
+	}));
+
+	const backupNotes = user?.backupNotes.map((note) => ({
+		...note.dataValues,
+		lastUpdated: calculateElapsedTime(note.updatedAt),
+	}));
+
 	return res.status(200).render('panel', {
-		notes: user?.notes.map((note) => ({
-			...note.dataValues,
-			lastUpdated: calculateElapsedTime(note.updatedAt),
-		})),
+		notes,
+		backupNotes,
 	});
 };
