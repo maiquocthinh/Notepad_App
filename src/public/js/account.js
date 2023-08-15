@@ -54,9 +54,9 @@ function initEventPasswordModal(noteId, havePassword, modalId) {
 				document.location.reload();
 			});
 		};
-		setPasswordBtn.parentElement.classList.add('hidden');
-		passwordInput.classList.add('hidden');
-		removePasswordBtn.classList.remove('hidden');
+		setPasswordBtn.parentElement.classList.add('hidden-force');
+		passwordInput.classList.add('hidden-force');
+		removePasswordBtn.classList.remove('hidden-force');
 	} else {
 		setPasswordBtn.onclick = function () {
 			if (!passwordInput.value) return toggleModal(modalId);
@@ -79,9 +79,9 @@ function initEventPasswordModal(noteId, havePassword, modalId) {
 				document.location.reload();
 			});
 		};
-		removePasswordBtn.classList.add('hidden');
-		passwordInput.classList.remove('hidden');
-		setPasswordBtn.parentElement.classList.remove('hidden');
+		removePasswordBtn.classList.add('hidden-force');
+		passwordInput.classList.remove('hidden-force');
+		setPasswordBtn.parentElement.classList.remove('hidden-force');
 	}
 }
 
@@ -95,14 +95,14 @@ function deleteNote(noteId, event) {
 			response.json().then(function (result) {
 				alert(result.error);
 			});
+		} else {
+			// remove element
+			const tr = event.target.closest('tr');
+			tr.classList.add('bg-red-100');
+			setTimeout(function () {
+				tr.remove();
+			}, 300);
 		}
-
-		// remove element
-		const tr = event.target.closest('tr');
-		tr.classList.add('bg-red-100');
-		setTimeout(function () {
-			tr.remove();
-		}, 300);
 	});
 }
 
@@ -151,4 +151,27 @@ function deleteBackupNote(backupNoteId, event) {
 // BACKUP_NOTE DOWNLOAD
 function downloadBackupNote(backupNoteId) {
 	window.open('/api/backup-note/download/' + backupNoteId, '_blank');
+}
+
+// REVOKE SESSION
+function revokeSession(sessionId, event) {
+	// fetch api to delete note
+	fetch('/api/revoke-session/', {
+		method: 'POST',
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify({ sid: sessionId }),
+	}).then(function (response) {
+		if (!response.ok) {
+			response.json().then(function (result) {
+				alert(result.error);
+			});
+		} else {
+			// remove element
+			const li = event.target.closest('li');
+			li.classList.add('bg-red-100');
+			setTimeout(function () {
+				li.remove();
+			}, 300);
+		}
+	});
 }

@@ -22,7 +22,7 @@
 	@apply bg-gray-100;
 }
 
-.hidden {
+.hidden-force {
 	display: none !important;
 }
 

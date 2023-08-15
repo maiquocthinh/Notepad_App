@@ -1,8 +1,7 @@
-import Note from '@models/note.model';
 import { Request, Response } from 'express';
 import { Readable } from 'stream';
 import bcrypt from 'bcryptjs';
-import BackupNote from '@models/backupNote.model';
+import { Note, BackupNote, Session } from '@models/index';
 
 export const setPasswordForNoteService = async (req: Request, res: Response) => {
 	try {
@@ -113,6 +112,20 @@ export const deleteBackupNoteService = async (req: Request, res: Response) => {
 		await BackupNote.destroy({ where: { id: backupNoteId } });
 
 		return res.status(200).json({ message: 'Delete backup note success' });
+	} catch (error: any) {
+		return res.status(400).json({ error: error.message });
+	}
+};
+
+export const revokeSessionService = async (req: Request, res: Response) => {
+	try {
+		const sid = req.body.sid;
+
+		if (!sid) throw new Error('Revoke session fail!');
+
+		await Session.destroy({ where: { sid } });
+
+		return res.status(200).json({ message: 'Revoke session success!' });
 	} catch (error: any) {
 		return res.status(400).json({ error: error.message });
 	}

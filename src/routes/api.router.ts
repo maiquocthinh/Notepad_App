@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { apiController } from '@controllers/index';
-import { checkBackupNoteBelongToUser, checkLogin, checkNoteBelongToUser } from '@middlewares/auth.middleware';
-import { deleteBackupNote, downloadBackupNote } from '@controllers/api.controller';
+import { checkBackupNoteBelongToUser, checkLogin, checkNoteBelongToUser, checkSessionOfUser } from '@middlewares/auth.middleware';
+import { deleteBackupNote, downloadBackupNote, revokeSession } from '@controllers/api.controller';
 
 const router = Router();
 
@@ -13,5 +13,6 @@ router.post('/note/backup/:noteId', checkLogin, checkNoteBelongToUser, backupNot
 router.get('/note/download/:noteId', checkLogin, checkNoteBelongToUser, downloadNote);
 router.delete('/backup-note/delete/:backupNoteId', checkLogin, checkBackupNoteBelongToUser, deleteBackupNote);
 router.get('/backup-note/download/:backupNoteId', checkLogin, checkBackupNoteBelongToUser, downloadBackupNote);
+router.post('/revoke-session', checkLogin, checkSessionOfUser, revokeSession);
 
 export default router;

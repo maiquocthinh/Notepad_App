@@ -5,6 +5,7 @@ import {
 	deleteNoteService,
 	downloadBackupNoteService,
 	downloadNoteService,
+	revokeSessionService,
 	setPasswordForNoteService,
 } from '@services/api.services';
 
@@ -40,4 +41,9 @@ export const downloadBackupNote = async (req: Request, res: Response) => {
 // [DELETE] /api/backup-note/delete/:backupNoteId
 export const deleteBackupNote = async (req: Request, res: Response) => {
 	return deleteBackupNoteService(req, res);
+};
+
+// [POST] /api/revoke-session
+export const revokeSession = async (req: Request, res: Response) => {
+	return revokeSessionService(req, res);
 };

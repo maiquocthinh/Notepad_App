@@ -50,7 +50,7 @@
 											</tr>
 										</thead>
 										<tbody>
-										<% notes.forEach((note, index)=>{ %>
+										<% notes?.forEach((note, index)=>{ %>
 											<tr class="<%= index % 2 === 0 ? 'bg-gray-200' : '' %>">
 												<td class="p-2">
 													<a class="c-a inline-flex items-center gap-1 underline" href="/<%= note.slug %>" target="_blank">
@@ -100,7 +100,7 @@
 											</tr>
 										</thead>
 										<tbody>
-										<% backupNotes.forEach((note, index)=>{ %>
+										<% backupNotes?.forEach((note, index)=>{ %>
 											<tr class="<%= index % 2 === 0 ? 'bg-gray-200' : '' %>">
 												<td><%= note.id %></td>
 												<td><%= note.lastUpdated %></td>
@@ -190,58 +190,22 @@
 											<h3 class="font-bold text-lg uppercase">Sessions</h3>
 											<hr class="my-3">
 											<ul class="flex flex-col gap-1">
+											<% sessions?.forEach((session)=>{ %>
 												<li class="border-dashed border-2 border-gray-400">
 													<div class="flex items-center gap-2 px-2 py-1">
-														<svg class="w-6 h-6" fill="currentColor" viewBox="0 0 32 32"><g stroke-width="0"></g><g stroke-linecap="round" stroke-linejoin="round"></g><g> <title></title> <g data-name="Layer 8" id="Layer_8"> <path d="M23.59,1H8.41A3.41,3.41,0,0,0,5,4.41V27.59A3.41,3.41,0,0,0,8.41,31H23.59A3.41,3.41,0,0,0,27,27.59V4.41A3.41,3.41,0,0,0,23.59,1ZM19,3l-.54,1.62a.56.56,0,0,1-.53.38H14.12a.56.56,0,0,1-.53-.38L13.05,3ZM25,27.59A1.41,1.41,0,0,1,23.59,29H8.41A1.41,1.41,0,0,1,7,27.59V4.41A1.41,1.41,0,0,1,8.41,3H11a1.17,1.17,0,0,0,0,.32l.65,1.93A2.55,2.55,0,0,0,14.12,7h3.76A2.55,2.55,0,0,0,20.3,5.25L21,3.32A1.17,1.17,0,0,0,21,3h2.6A1.41,1.41,0,0,1,25,4.41Z"></path> <path d="M17,25H15a1,1,0,0,0,0,2h2a1,1,0,0,0,0-2Z"></path> </g> </g></svg>
+														<%- DeviceIcons[session.client.deviceType] %>
 														<div class="flex-grow">
-															<p>123.123.123.123 - California</p>
-															<span>Safari on iPhone</span>
+															<%- session.isThisSession ? '<p class="text-sm text-teal-600 font-bold">This Session</p>' : '' %>
+															<p><%= `${session.client.ip} - ${session.client.location}` %></p>
+															<p><%= `${session.client.browser} on ${session.client.platform}` %></p>
 														</div>
-														<button class="c-btn-outline">
+														<button class="c-btn-outline" onclick="revokeSession('<%= session.sid %>', event)">
 															<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none"><g stroke-width="0"></g><g stroke-linecap="round" stroke-linejoin="round"></g><g> <path fill-rule="evenodd" clip-rule="evenodd" d="M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12ZM7.29289 16.7071C6.90237 16.3166 6.90237 15.6834 7.29289 15.2929L10.5858 12L7.29289 8.70711C6.90237 8.31658 6.90237 7.68342 7.29289 7.29289C7.68342 6.90237 8.31658 6.90237 8.70711 7.29289L12 10.5858L15.2929 7.29289C15.6834 6.90237 16.3166 6.90237 16.7071 7.29289C17.0976 7.68342 17.0976 8.31658 16.7071 8.70711L13.4142 12L16.7071 15.2929C17.0976 15.6834 17.0976 16.3166 16.7071 16.7071C16.3166 17.0976 15.6834 17.0976 15.2929 16.7071L12 13.4142L8.70711 16.7071C8.31658 17.0976 7.68342 17.0976 7.29289 16.7071Z" fill="currentColor"></path> </g></svg>
 															Revoke
 														</button>
 													</div>
 												</li>
-												<li class="border-dashed border-2 border-gray-400">
-													<div class="flex items-center gap-2 px-2 py-1">
-														<svg class="w-6 h-6" fill="currentColor" viewBox="0 0 32 32"><g stroke-width="0"></g><g stroke-linecap="round" stroke-linejoin="round"></g><g> <title></title> <g data-name="Layer 10" id="Layer_10"> <path d="M23.43,1H8.57A3.57,3.57,0,0,0,5,4.57V27.43A3.57,3.57,0,0,0,8.57,31H23.43A3.57,3.57,0,0,0,27,27.43V4.57A3.57,3.57,0,0,0,23.43,1ZM25,27.43A1.58,1.58,0,0,1,23.43,29H8.57A1.58,1.58,0,0,1,7,27.43V4.57A1.58,1.58,0,0,1,8.57,3H23.43A1.58,1.58,0,0,1,25,4.57Z"></path> <path d="M16,24.5A1.5,1.5,0,1,0,17.5,26,1.5,1.5,0,0,0,16,24.5Zm0,2a.5.5,0,1,1,.5-.5A.5.5,0,0,1,16,26.5Z"></path> </g> </g></svg>
-														<div class="flex-grow">
-															<p>123.123.123.123 - Canada</p>
-															<span>Safari on iPad</span>
-														</div>
-														<button class="c-btn-outline">
-															<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none"><g stroke-width="0"></g><g stroke-linecap="round" stroke-linejoin="round"></g><g> <path fill-rule="evenodd" clip-rule="evenodd" d="M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12ZM7.29289 16.7071C6.90237 16.3166 6.90237 15.6834 7.29289 15.2929L10.5858 12L7.29289 8.70711C6.90237 8.31658 6.90237 7.68342 7.29289 7.29289C7.68342 6.90237 8.31658 6.90237 8.70711 7.29289L12 10.5858L15.2929 7.29289C15.6834 6.90237 16.3166 6.90237 16.7071 7.29289C17.0976 7.68342 17.0976 8.31658 16.7071 8.70711L13.4142 12L16.7071 15.2929C17.0976 15.6834 17.0976 16.3166 16.7071 16.7071C16.3166 17.0976 15.6834 17.0976 15.2929 16.7071L12 13.4142L8.70711 16.7071C8.31658 17.0976 7.68342 17.0976 7.29289 16.7071Z" fill="currentColor"></path> </g></svg>
-															Revoke
-														</button>
-													</div>
-												</li>
-												<li class="border-dashed border-2 border-gray-400">
-													<div class="flex items-center gap-2 px-2 py-1">
-														<svg class="w-6 h-6" fill="currentColor"  viewBox="0 0 32 32"><g stroke-width="0"></g><g stroke-linecap="round" stroke-linejoin="round"></g><g> <title></title> <g data-name="Layer 17" id="Layer_17"> <path d="M30.93,25.59l-2-7.83s0-.07,0-.11a1.82,1.82,0,0,0,.08-.52V2.88A1.88,1.88,0,0,0,27.13,1H4.88A1.88,1.88,0,0,0,3,2.88V17.13a1.82,1.82,0,0,0,.08.52s0,.07-.05.11l-2,7.83a2.3,2.3,0,0,0-.07.58v1.46A2.38,2.38,0,0,0,3.38,30H28.63A2.38,2.38,0,0,0,31,27.63V26.17A2.3,2.3,0,0,0,30.93,25.59ZM5,3H27V17H5ZM29,27.63a.38.38,0,0,1-.37.37H3.38A.38.38,0,0,1,3,27.63V26.08L4.78,19H27.22L29,26.17Z"></path> <path d="M23,25H9a1,1,0,0,0,0,2H23a1,1,0,0,0,0-2Z"></path> </g> </g></svg>
-														<div class="flex-grow">
-															<p>123.123.123.123 - Korea</p>
-															<span>Chrome on macOS</span>
-														</div>
-														<button class="c-btn-outline">
-															<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none"><g stroke-width="0"></g><g stroke-linecap="round" stroke-linejoin="round"></g><g> <path fill-rule="evenodd" clip-rule="evenodd" d="M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12ZM7.29289 16.7071C6.90237 16.3166 6.90237 15.6834 7.29289 15.2929L10.5858 12L7.29289 8.70711C6.90237 8.31658 6.90237 7.68342 7.29289 7.29289C7.68342 6.90237 8.31658 6.90237 8.70711 7.29289L12 10.5858L15.2929 7.29289C15.6834 6.90237 16.3166 6.90237 16.7071 7.29289C17.0976 7.68342 17.0976 8.31658 16.7071 8.70711L13.4142 12L16.7071 15.2929C17.0976 15.6834 17.0976 16.3166 16.7071 16.7071C16.3166 17.0976 15.6834 17.0976 15.2929 16.7071L12 13.4142L8.70711 16.7071C8.31658 17.0976 7.68342 17.0976 7.29289 16.7071Z" fill="currentColor"></path> </g></svg>
-															Revoke
-														</button>
-													</div>
-												</li>
-												<li class="border-dashed border-2 border-gray-400">
-													<div class="flex items-center gap-2 px-2 py-1">
-														<svg class="w-6 h-6" fill="currentColor" viewBox="0 0 32 32"><g stroke-width="0"></g><g stroke-linecap="round" stroke-linejoin="round"></g><g> <title></title> <g data-name="Layer 11" id="Layer_11"> <path d="M28.8,1H20.2A2.21,2.21,0,0,0,18,3.2V5H3.6A2.61,2.61,0,0,0,1,7.6V22.4A2.61,2.61,0,0,0,3.6,25h6.64L9.7,29H8.86a1,1,0,1,0,0,2H19.14a1,1,0,0,0,0-2h-.86l-.68-4h6.8A2.61,2.61,0,0,0,27,22.4V7.6A2.61,2.61,0,0,0,24.4,5H20V3.2a.2.2,0,0,1,.2-.2h8.6a.2.2,0,0,1,.2.2V26.8a.2.2,0,0,1-.2.2H21a1,1,0,0,0,0,2h7.8A2.21,2.21,0,0,0,31,26.8V3.2A2.21,2.21,0,0,0,28.8,1ZM16.25,29H11.72l.54-4h3.32ZM25,7.6V22.4a.6.6,0,0,1-.6.6H3.6a.6.6,0,0,1-.6-.6V7.6A.6.6,0,0,1,3.6,7H24.4A.6.6,0,0,1,25,7.6Z"></path> </g> </g></svg>
-														<div class="flex-grow">
-															<p>123.123.123.123 - Rome</p>
-															<span>Microsoft Edge on Window</span>
-														</div>
-														<button class="c-btn-outline">
-															<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none"><g stroke-width="0"></g><g stroke-linecap="round" stroke-linejoin="round"></g><g> <path fill-rule="evenodd" clip-rule="evenodd" d="M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12ZM7.29289 16.7071C6.90237 16.3166 6.90237 15.6834 7.29289 15.2929L10.5858 12L7.29289 8.70711C6.90237 8.31658 6.90237 7.68342 7.29289 7.29289C7.68342 6.90237 8.31658 6.90237 8.70711 7.29289L12 10.5858L15.2929 7.29289C15.6834 6.90237 16.3166 6.90237 16.7071 7.29289C17.0976 7.68342 17.0976 8.31658 16.7071 8.70711L13.4142 12L16.7071 15.2929C17.0976 15.6834 17.0976 16.3166 16.7071 16.7071C16.3166 17.0976 15.6834 17.0976 15.2929 16.7071L12 13.4142L8.70711 16.7071C8.31658 17.0976 7.68342 17.0976 7.29289 16.7071Z" fill="currentColor"></path> </g></svg>
-															Revoke
-														</button>
-													</div>
-												</li>
+											<% }) %>
 											</ul>
 										</div>
 									</div>

@@ -2,11 +2,12 @@ import { Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
 import { validateOrReject, ValidationError } from 'class-validator';
 import { plainToClass } from 'class-transformer';
-import sequelize from 'sequelize';
+import sequelize, { Op } from 'sequelize';
 import { LoginParams, RegisterParams } from '../types/account.types';
-import { User, Note, BackupNote } from '@models/index';
+import { User, Note, BackupNote, Session } from '@models/index';
 import getInfoClient from '@utils/getInfoClient';
 import { calculateElapsedTime } from '@utils/time';
+import { DeviceIcons } from '@config/constants';
 
 export const createAccount = async (req: Request, res: Response) => {
 	try {
@@ -102,10 +103,18 @@ export const renderPanel = async (req: Request, res: Response) => {
 				model: BackupNote,
 				attributes: ['id', 'updatedAt'],
 			},
+			{
+				model: Session,
+				where: {
+					[Op.and]: [sequelize.where(sequelize.fn('NOW'), '<', sequelize.col('expires'))],
+				},
+				attributes: ['sid', 'data'],
+			},
 		],
 		order: [
 			[{ model: Note, as: 'notes' }, 'updatedAt', 'DESC'],
 			[{ model: BackupNote, as: 'backupNotes' }, 'updatedAt', 'DESC'],
+			[{ model: Session, as: 'sessions' }, 'createdAt', 'DESC'],
 		],
 	});
 
@@ -119,8 +128,20 @@ export const renderPanel = async (req: Request, res: Response) => {
 		lastUpdated: calculateElapsedTime(note.updatedAt),
 	}));
 
+	const sessions = user?.sessions.map((session) => {
+		const data = JSON.parse(session.data as string);
+		return {
+			sid: session.sid,
+			user: data.user,
+			client: data.client,
+			isThisSession: session.sid === req.sessionID,
+		};
+	});
+
 	return res.status(200).render('panel', {
 		notes,
 		backupNotes,
+		sessions,
+		DeviceIcons,
 	});
 };
