@@ -1,4 +1,15 @@
-import { Column, DataType, Model, PrimaryKey, Table, HasMany, Default, BeforeCreate, Unique } from 'sequelize-typescript';
+import {
+	Column,
+	DataType,
+	Model,
+	PrimaryKey,
+	Table,
+	HasMany,
+	Default,
+	BeforeCreate,
+	Unique,
+	BeforeUpdate,
+} from 'sequelize-typescript';
 import Note from './note.model';
 import BackupNote from './backupNote.model';
 import Session from './session.model';
@@ -45,6 +56,15 @@ class User extends Model {
 	@BeforeCreate
 	static hashPasswordBeforeCreate(user: User) {
 		if (user.hashPassword) {
+			const salt = bcrypt.genSaltSync(10);
+			const hashedPassword = bcrypt.hashSync(user.hashPassword, salt);
+			user.hashPassword = hashedPassword;
+		}
+	}
+
+	@BeforeUpdate
+	static hashPasswordBeforeUpdate(user: User) {
+		if (user.changed('hashPassword') && user.hashPassword) {
 			const salt = bcrypt.genSaltSync(10);
 			const hashedPassword = bcrypt.hashSync(user.hashPassword, salt);
 			user.hashPassword = hashedPassword;

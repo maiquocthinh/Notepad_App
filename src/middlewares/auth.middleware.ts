@@ -39,8 +39,6 @@ export const checkSessionOfUser = (req: Request, res: Response, next: NextFuncti
 	const user = req.session.user;
 	const sid = req.body.sid;
 
-	console.log(user, sid);
-
 	if (!user || !sid) return res.status(400).json({ error: 'Revoke session fail!' });
 
 	const isSessionOfUser = Session.findOne({ where: { sid, userId: user.id }, attributes: ['sid'] });

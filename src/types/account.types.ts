@@ -1,4 +1,13 @@
-import { IsString, MinLength, IsEmail, ValidationOptions, registerDecorator, ValidationArguments } from 'class-validator';
+import {
+	IsString,
+	MinLength,
+	IsEmail,
+	ValidationOptions,
+	registerDecorator,
+	ValidationArguments,
+	IsUrl,
+	IsOptional,
+} from 'class-validator';
 
 // custom validator decorator
 const IsMatch = (property: string, validationOptions?: ValidationOptions) => {
@@ -47,4 +56,19 @@ export class RegisterParams extends LoginParams {
 
 	@IsString()
 	captcha!: string;
+}
+
+export class UpdateAccountParams {
+	@IsOptional()
+	@IsEmail()
+	email?: string;
+
+	@IsOptional()
+	@IsString()
+	@MinLength(6)
+	password?: string;
+
+	@IsOptional()
+	@IsUrl()
+	avatar?: string;
 }

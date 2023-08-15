@@ -3,7 +3,7 @@ import bcrypt from 'bcryptjs';
 import { validateOrReject, ValidationError } from 'class-validator';
 import { plainToClass } from 'class-transformer';
 import sequelize, { Op } from 'sequelize';
-import { LoginParams, RegisterParams } from '../types/account.types';
+import { LoginParams, RegisterParams, UpdateAccountParams } from '../types/account.types';
 import { User, Note, BackupNote, Session } from '@models/index';
 import getInfoClient from '@utils/getInfoClient';
 import { calculateElapsedTime } from '@utils/time';
@@ -32,7 +32,7 @@ export const createAccount = async (req: Request, res: Response) => {
 		});
 	} catch (errors: any) {
 		if (Array.isArray(errors) && errors.every((error) => error instanceof ValidationError)) {
-			return res.status(200).render('register', {
+			return res.status(400).render('register', {
 				errors: errors.map((error) => error.constraints && Object.values(error.constraints)).flat(),
 			});
 		} else if (errors instanceof sequelize.ValidationError) {
@@ -75,7 +75,7 @@ export const handleLogin = async (req: Request, res: Response) => {
 		return res.redirect('/account/panel');
 	} catch (errors: any) {
 		if (Array.isArray(errors) && errors.every((error) => error instanceof ValidationError)) {
-			return res.status(200).render('login', {
+			return res.status(400).render('login', {
 				errors: errors.map((error) => error.constraints && Object.values(error.constraints)).flat(),
 			});
 		} else if (errors instanceof sequelize.ValidationError) {
@@ -139,9 +139,46 @@ export const renderPanel = async (req: Request, res: Response) => {
 	});
 
 	return res.status(200).render('panel', {
+		user: { ...user?.dataValues, notes: undefined, backupNotes: undefined, sessions: undefined },
 		notes,
 		backupNotes,
 		sessions,
 		DeviceIcons,
 	});
+};
+
+export const updateAccountService = async (req: Request, res: Response) => {
+	try {
+		const userId = req.session.user?.id;
+		const data = plainToClass(UpdateAccountParams, req.body);
+
+		// validate
+		await validateOrReject(data);
+
+		// update
+		await User.update(
+			{
+				email: data.email,
+				avatar: data.avatar,
+				hashPassword: data.password,
+			},
+			{ where: { id: userId }, individualHooks: true },
+		);
+
+		return res.status(200).json({ message: 'Update account success!' });
+	} catch (errors: any) {
+		if (Array.isArray(errors) && errors.every((error) => error instanceof ValidationError)) {
+			return res.status(400).json({
+				errors: errors.map((error) => error.constraints && Object.values(error.constraints)).flat(),
+			});
+		} else if (errors instanceof sequelize.ValidationError) {
+			return res.status(400).json({
+				errors: errors.errors.map((err) => err.message),
+			});
+		} else {
+			return res.status(400).render('login', {
+				errors: [errors.message],
+			});
+		}
+	}
 };

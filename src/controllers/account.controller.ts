@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import svgCaptcha, { CaptchaObj } from 'svg-captcha';
 import bcrypt from 'bcryptjs';
-import { createAccount, handleLogin, renderPanel } from '@services/account.services';
+import { createAccount, handleLogin, renderPanel, updateAccountService } from '@services/account.services';
 
 // ╔════════════╗
 // ║	PAGE	║
@@ -30,7 +30,10 @@ export const registerPost = async (req: Request, res: Response) => {
 };
 
 export const logout = async (req: Request, res: Response) => {
-	return res.status(200).json({ msg: 'logout' });
+	req.session.destroy((err) => {
+		if (err) return res.status(500).json({ message: err.message });
+		return res.redirect('/account/login');
+	});
 };
 
 export const forgot = async (req: Request, res: Response) => {
@@ -63,4 +66,13 @@ export const captcha = async (_req: Request, res: Response) => {
 	res.cookie('cc_hash', hashedCaptcha, { httpOnly: true, maxAge: 900000 }); // 15m
 
 	return res.type('svg').send(captcha.data);
+};
+
+// ╔═══════════╗
+// ║	API    ║
+// ╚═══════════╝
+
+// [PATCH] /account
+export const updateAccount = async (req: Request, res: Response) => {
+	return updateAccountService(req, res);
 };

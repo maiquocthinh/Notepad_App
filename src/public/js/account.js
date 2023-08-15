@@ -24,8 +24,44 @@ if (tabs.length > 0 && tabContents.length > 0) {
 
 			tabActive = tab;
 			tabContentActive = tabContents[index];
+
+			saveTab(index);
 		};
 	});
+
+	function saveTab(index) {
+		const url = new URL(window.location.href);
+
+		const searchParams = new URLSearchParams(url.search);
+		searchParams.set('tab', index);
+
+		url.search = searchParams.toString();
+
+		window.history.pushState(null, '', url.toString());
+	}
+
+	function getTab() {
+		const urlParams = new URLSearchParams(window.location.search);
+		const tabIndex = parseInt(urlParams.get('tab'));
+		return !isNaN(tabIndex) ? tabIndex : -1;
+	}
+
+	// auto load tab
+	(function loadTab() {
+		const tabIndex = getTab();
+
+		if (tabIndex !== -1) {
+			// change tab
+			tabActive.classList.remove('active');
+			tabs[tabIndex].classList.add('active');
+			tabActive = tabs[tabIndex];
+
+			// change content
+			tabContentActive.classList.remove('active');
+			tabContents[tabIndex].classList.add('active');
+			tabContentActive = tabContents[tabIndex];
+		}
+	})();
 }
 
 // NOTE PASSWORD
@@ -174,4 +210,75 @@ function revokeSession(sessionId, event) {
 			}, 300);
 		}
 	});
+}
+
+// UPDATE ACCOUNT INFO
+function updateAccountInfo({ email, password, avatar }) {
+	console.log({ email, password, avatar });
+
+	if (!email && !password && !avatar) return alert('Change account info fail!');
+
+	fetch('/account', {
+		method: 'PATCH',
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify({ email, password, avatar }),
+	})
+		.then(function (res) {
+			if (!res.ok) {
+				res.json().then(function (result) {
+					alert(result.errors.join('/n'));
+				});
+			} else document.location.reload();
+		})
+		.catch(function () {
+			alert('Change account info fail!');
+		});
+}
+
+function uploadImage(event) {
+	const API_URL = 'https://tame-red-clownfish-tutu.cyclic.app/image';
+
+	const file = event.target.files[0];
+	if (!file) return;
+
+	const formData = new FormData();
+	formData.append('image', file);
+
+	fetch(API_URL, {
+		method: 'POST',
+		body: formData,
+	})
+		.then(function (res) {
+			if (!res.ok) alert('Change avatar fail!');
+			else {
+				res.json().then(function (result) {
+					if (!result.success) return alert('Change avatar fail!');
+					updateAccountInfo({ avatar: result.data.link });
+				});
+			}
+		})
+		.catch(function () {
+			alert('Change avatar fail!');
+		});
+}
+
+function updateGeneralInfo(event) {
+	event.preventDefault();
+	const email = document.getElementById('email').value;
+
+	// validate email
+	if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return alert('Email invalid!');
+
+	updateAccountInfo({ email });
+}
+
+function updatePassword(event) {
+	event.preventDefault();
+	const password = document.getElementById('password').value;
+	const confirmPassword = document.getElementById('cf_password').value;
+
+	// compare password with confirm_password
+	if (password !== confirmPassword) return alert('Password and Confirm Password not match!');
+
+	updateAccountInfo({ password });
 }
