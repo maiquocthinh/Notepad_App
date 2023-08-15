@@ -1,4 +1,4 @@
-import express, { Express } from 'express';
+import express, { Express, Request, Response, NextFunction } from 'express';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import compression from 'compression';
@@ -57,5 +57,23 @@ app.set('view engine', 'ejs');
 
 // Mount Routes
 mountRoutes(app);
+
+// Middleware handle error not found endpoint
+app.use((req: Request, res: Response, next: NextFunction) => {
+	const error = new Error('Page not found!');
+	(error as any).status = 404;
+	next(error);
+});
+
+// Middleware error
+app.use((error: any, req: Request, res: Response, next: NextFunction) => {
+	console.error(error);
+	res.status(error.status || 500).json({
+		error: {
+			status: error.status || 500,
+			message: error.message || 'Internal Server Error',
+		},
+	});
+});
 
 export default app;
