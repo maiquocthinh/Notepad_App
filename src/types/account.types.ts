@@ -72,3 +72,25 @@ export class UpdateAccountParams {
 	@IsUrl()
 	avatar?: string;
 }
+
+export class ForgotPasswordParams {
+	@IsEmail()
+	email!: string;
+
+	@IsString()
+	captcha!: string;
+}
+
+export class ResetPasswordParams {
+	@IsString()
+	@MinLength(6)
+	password!: string;
+
+	@IsString()
+	@IsMatch('password', { message: 'Confirm password must match password' })
+	cf_password!: string;
+}
+
+export type ResetPasswordPayload = {
+	username: string;
+};

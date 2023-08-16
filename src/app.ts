@@ -37,7 +37,7 @@ app.use(useragent.express());
 app.use(
 	cors({
 		credentials: true,
-		origin: env.CORS_ORIGIN,
+		origin: env.SITE_URL,
 	}),
 );
 app.use(

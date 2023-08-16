@@ -1,7 +1,15 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import svgCaptcha, { CaptchaObj } from 'svg-captcha';
 import bcrypt from 'bcryptjs';
-import { createAccount, handleLogin, renderPanel, updateAccountService } from '@services/account.services';
+import {
+	createAccount,
+	handleLogin,
+	renderPanel,
+	updateAccountService,
+	forgotPasswordService,
+	renderResetPasswordService,
+	handleResetPasswordService,
+} from '@services/account.services';
 
 // ╔════════════╗
 // ║	PAGE	║
@@ -26,9 +34,10 @@ export const register = async (req: Request, res: Response) => {
 
 // [GET] /account/register
 export const registerPost = async (req: Request, res: Response) => {
-	return createAccount(req, res);
+	return await createAccount(req, res);
 };
 
+// [GET] /account/logout
 export const logout = async (req: Request, res: Response) => {
 	req.session.destroy((err) => {
 		if (err) return res.status(500).json({ message: err.message });
@@ -36,18 +45,32 @@ export const logout = async (req: Request, res: Response) => {
 	});
 };
 
+// [GET] /account/forgot
 export const forgot = async (req: Request, res: Response) => {
 	return res.status(200).render('forgot');
 };
 
-export const resetPassword = async (req: Request, res: Response) => {
-	return res.status(200).render('reset-password');
+// [POST] /account/forgot
+export const forgotPost = async (req: Request, res: Response) => {
+	return await forgotPasswordService(req, res);
 };
 
+// [GET] /account/reset-password
+export const resetPassword = async (req: Request, res: Response, next: NextFunction) => {
+	return renderResetPasswordService(req, res, next);
+};
+
+// [POST] /account/reset-password
+export const resetPasswordPost = async (req: Request, res: Response) => {
+	return await handleResetPasswordService(req, res);
+};
+
+// [GET] /account/panel
 export const panel = async (req: Request, res: Response) => {
-	return renderPanel(req, res);
+	return await renderPanel(req, res);
 };
 
+// [GET] /account/captcha
 export const captcha = async (_req: Request, res: Response) => {
 	const captcha: CaptchaObj = svgCaptcha.create({
 		height: 30,

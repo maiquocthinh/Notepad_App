@@ -1,13 +1,21 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
 import { validateOrReject, ValidationError } from 'class-validator';
 import { plainToClass } from 'class-transformer';
 import sequelize, { Op } from 'sequelize';
-import { LoginParams, RegisterParams, UpdateAccountParams } from '../types/account.types';
+import {
+	LoginParams,
+	RegisterParams,
+	UpdateAccountParams,
+	ForgotPasswordParams,
+	ResetPasswordParams,
+} from '../types/account.types';
 import { User, Note, BackupNote, Session } from '@models/index';
 import getInfoClient from '@utils/getInfoClient';
 import { calculateElapsedTime } from '@utils/time';
 import { DeviceIcons } from '@config/constants';
+import { sendResetPasswordLink } from '@utils/email';
+import { createToken, verifyToken } from '@utils/jwt';
 
 export const createAccount = async (req: Request, res: Response) => {
 	try {
@@ -177,6 +185,109 @@ export const updateAccountService = async (req: Request, res: Response) => {
 			});
 		} else {
 			return res.status(400).render('login', {
+				errors: [errors.message],
+			});
+		}
+	}
+};
+
+export const forgotPasswordService = async (req: Request, res: Response) => {
+	try {
+		const data = plainToClass(ForgotPasswordParams, req.body);
+
+		// compare captcha
+		if (!bcrypt.compareSync(data.captcha, req.cookies.cc_hash)) throw new Error('Captcha invalid!');
+
+		// validate
+		await validateOrReject(data);
+
+		// check account exists?
+		const user = await User.findOne({ where: { email: data.email }, attributes: ['username'] });
+		if (!user) throw new Error('Account does not exist!');
+
+		// create token
+		const token = createToken.resetPasswordToken({ username: user.username });
+
+		// send email
+		await sendResetPasswordLink(data.email, token);
+
+		// render success
+		return res.status(200).render('forgot', {
+			success: { message: 'Reset Password link sent to your E-mail!' },
+		});
+	} catch (errors: any) {
+		if (Array.isArray(errors) && errors.every((error) => error instanceof ValidationError)) {
+			return res.status(400).render('forgot', {
+				errors: errors.map((error) => error.constraints && Object.values(error.constraints)).flat(),
+			});
+		} else if (errors instanceof sequelize.ValidationError) {
+			return res.status(400).render('forgot', {
+				errors: errors.errors.map((err) => err.message),
+			});
+		} else {
+			return res.status(400).render('forgot', {
+				errors: [errors.message],
+			});
+		}
+	}
+};
+
+export const renderResetPasswordService = async (req: Request, res: Response, next: NextFunction) => {
+	try {
+		// get token
+		const token = req.params.token;
+		if (!token) throw new Error('This link is wrong!');
+
+		// verify token
+		try {
+			verifyToken.resetPasswordToken(token);
+		} catch (error) {
+			throw new Error('This link is expired or wrong!');
+		}
+
+		// render success
+		return res.status(200).render('reset_password');
+	} catch (error) {
+		(error as any).status = 400;
+		return next(error);
+	}
+};
+
+export const handleResetPasswordService = async (req: Request, res: Response) => {
+	try {
+		const data = plainToClass(ResetPasswordParams, req.body);
+
+		console.log(data);
+
+		// validate
+		await validateOrReject(data);
+
+		// get token
+		const token = req.params.token;
+		if (!token) throw new Error('Reset Password fail. Maybe this link is expired!');
+
+		// verify token
+		const { username } = verifyToken.resetPasswordToken(token);
+		if (!username) throw new Error('Reset Password fail. Maybe this link is expired!');
+
+		// reset password
+		await User.update({ hashPassword: data.password }, { where: { username }, individualHooks: true });
+
+		// render success
+		return res.status(200).render('reset_password', {
+			success: { message: 'Reset Password success. Go login!' },
+		});
+	} catch (errors: any) {
+		if (Array.isArray(errors) && errors.every((error) => error instanceof ValidationError)) {
+			return res.status(400).render('reset_password', {
+				errors: errors.map((error) => error.constraints && Object.values(error.constraints)).flat(),
+			});
+		} else if (errors instanceof sequelize.ValidationError) {
+			return res.status(400).render('reset_password', {
+				errors: errors.errors.map((err) => err.message),
+			});
+		} else {
+			return res.status(400).render('reset_password', {
 				errors: [errors.message],
 			});
 		}
