@@ -151,6 +151,7 @@ function changeSlug(event) {
 				removePasswordBtn.parentElement.classList.add('hidden-force');
 				passwordInput.classList.remove('hidden-force');
 				setPasswordBtn.parentElement.classList.remove('hidden-force');
+				noteLogoutBtn.dispatchEvent(new Event('click'));
 			} else {
 				response.json().then(function (result) {
 					alert(result.error);
@@ -170,6 +171,7 @@ function changeSlug(event) {
 			body: JSON.stringify({ password: passwordInput.value }),
 		}).then(function (response) {
 			if (response.ok) {
+				passwordInput.value = '';
 				setPasswordBtn.parentElement.classList.add('hidden-force');
 				passwordInput.classList.add('hidden-force');
 				removePasswordBtn.parentElement.classList.remove('hidden-force');
@@ -179,6 +181,20 @@ function changeSlug(event) {
 				});
 			}
 			toggleModal(modalId);
+		});
+	};
+
+	noteLogoutBtn.onclick = function () {
+		const NOTE_SLUG = window.location.href.match(/\/([^\/]+)$/)[1];
+
+		fetch('/api/note/logout/' + NOTE_SLUG, { method: 'DELETE' }).then(function (response) {
+			if (response.ok) {
+				window.location.href = '/login/' + NOTE_SLUG;
+			} else {
+				response.json().then(function (result) {
+					alert(result.error);
+				});
+			}
 		});
 	};
 })('modal_password');

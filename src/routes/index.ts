@@ -1,15 +1,16 @@
-import { Express, Request, Response } from 'express';
+import { Express } from 'express';
 import accountRouter from './account.router';
 import apiRouter from './api.router';
 import { noteController } from '@controllers/index';
+import { checkLoggedInNote, checkNotLoggedInNote } from '@middlewares/auth.middleware';
 
 const { write, share, raw, code, markdown, userBackup, noteLogin } = noteController;
 
 const mountRoutes = (app: Express) => {
 	app.use('/account', accountRouter);
 	app.use('/api', apiRouter);
-	app.get('/:slug', write);
-	app.get('/login/:slug', noteLogin);
+	app.get('/:slug', checkNotLoggedInNote, write);
+	app.get('/login/:slug', checkLoggedInNote, noteLogin);
 	app.get('/share/:externalSlug', share);
 	app.get('/raw/:externalSlug', raw);
 	app.get('/code/:externalSlug', code);

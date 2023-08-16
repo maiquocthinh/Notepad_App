@@ -12,3 +12,5 @@ export type SessionDataClient = {
 	browser: string;
 	deviceType: string;
 };
+
+export type SessionDataNotesLoggedIn = string[];

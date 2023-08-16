@@ -8,11 +8,23 @@ import {
 	revokeSessionService,
 	setPasswordForNoteService,
 	changeNoteSlugService,
+	noteLoginService,
+	noteLogoutService,
 } from '@services/api.services';
 
 // ╔═══════════╗
 // ║	API    ║
 // ╚═══════════╝
+
+// [POST] /api/note/login/:noteId
+export const noteLogin = async (req: Request, res: Response) => {
+	return noteLoginService(req, res);
+};
+
+// [DELETE] /api/note/logout/:noteId
+export const noteLogout = async (req: Request, res: Response) => {
+	return noteLogoutService(req, res);
+};
 
 // [POST] /api/note/set-password/:noteId
 export const changeNoteSlug = async (req: Request, res: Response) => {

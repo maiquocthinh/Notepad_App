@@ -47,3 +47,28 @@ export const checkSessionOfUser = (req: Request, res: Response, next: NextFuncti
 
 	return next();
 };
+
+export const checkNotLoggedInNote = async (req: Request, res: Response, next: NextFunction) => {
+	const slug = req.params?.slug;
+	const notesLoggedIn = req.session.notesLoggedIn;
+
+	const note = await Note.findOne({ where: { slug }, attributes: ['needPassword'] });
+	if (!note?.needPassword) return next();
+
+	if (!notesLoggedIn?.includes(slug)) return res.redirect('/login/' + slug);
+
+	return next();
+};
+
+export const checkLoggedInNote = async (req: Request, res: Response, next: NextFunction) => {
+	const slug = req.params.slug;
+	const notesLoggedIn = req.session.notesLoggedIn;
+
+	if (notesLoggedIn?.includes(slug)) return res.redirect('/' + slug);
+
+	const note = await Note.findOne({ where: { slug }, attributes: ['needPassword'] });
+	if (!note) return res.redirect('/' + slug);
+	if (!note.needPassword) return res.redirect('/' + slug);
+
+	return next();
+};

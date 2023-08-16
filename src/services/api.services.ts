@@ -3,22 +3,67 @@ import { Readable } from 'stream';
 import bcrypt from 'bcryptjs';
 import { Note, BackupNote, Session } from '@models/index';
 
+export const noteLoginService = async (req: Request, res: Response) => {
+	try {
+		const slug = req.params.slug;
+		const password = req.body.password;
+
+		if (!slug) throw new Error('Login into note fail!');
+
+		const note = await Note.findOne({ where: { slug }, attributes: ['needPassword', 'hashPassword'] });
+		if (!note) throw new Error('Login into note fail!');
+
+		if (!note.needPassword) throw new Error('Login fail. This note do not have password!');
+
+		// compare password of note
+		if (!bcrypt.compareSync(password, note.hashPassword as string)) throw new Error('Login fail. Password wrong!');
+
+		// update session notesLoggedIn
+		if (Array.isArray(req.session.notesLoggedIn)) req.session.notesLoggedIn.push(slug);
+		else req.session.notesLoggedIn = [slug];
+
+		return res.status(200).json({ message: 'Login into note success!' });
+	} catch (error: any) {
+		return res.status(400).json({ error: error.message });
+	}
+};
+
+export const noteLogoutService = async (req: Request, res: Response) => {
+	try {
+		const noteSlug = req.params.slug;
+
+		if (!noteSlug) throw new Error('Logout from note fail!');
+
+		// remove noteId from notesLoggedIn
+		if (!req.session.user && req.session.notesLoggedIn?.length === 1 && req.session.notesLoggedIn?.includes(noteSlug))
+			req.session.destroy((err) => {
+				if (err) return res.status(500).json({ message: err.message });
+			});
+		else if (Array.isArray(req.session.notesLoggedIn))
+			req.session.notesLoggedIn = req.session.notesLoggedIn.filter((_noteSlug) => _noteSlug !== noteSlug);
+
+		return res.status(200).json({ message: 'Logout from note success!' });
+	} catch (error: any) {
+		return res.status(400).json({ error: error.message });
+	}
+};
+
 export const changeNoteSlugService = async (req: Request, res: Response) => {
 	try {
 		const noteId = req.params.noteId;
 		const slug = req.body.slug;
 
-		if (!noteId) throw new Error('Change note slu fail!');
+		if (!noteId) throw new Error('Change note slug fail!');
 
 		const note = await Note.findByPk(noteId);
-		if (!note) throw new Error('Change note slu fail!');
+		if (!note) throw new Error('Change note slug fail!');
 
 		note.slug = slug;
 		await note.save();
 
 		return res.status(200).json({ message: 'Change note slug success!' });
 	} catch (error: any) {
-		return res.status(400).json({ message: error.message });
+		return res.status(400).json({ error: error.message });
 	}
 };
 
@@ -41,7 +86,7 @@ export const setPasswordForNoteService = async (req: Request, res: Response) => 
 		if (password) return res.status(200).json({ message: 'Set password for note success!' });
 		else return res.status(200).json({ message: 'Remove password from note success!' });
 	} catch (error: any) {
-		return res.status(400).json({ message: error.message });
+		return res.status(400).json({ error: error.message });
 	}
 };
 
