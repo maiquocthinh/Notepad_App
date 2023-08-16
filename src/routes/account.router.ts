@@ -2,6 +2,7 @@ import { Router, Request, Response } from 'express';
 
 import { accountController } from '@controllers/index';
 import { checkLogin } from '@middlewares/auth.middleware';
+import { forgotPasswordLimiter } from '@middlewares/limit.middlewares';
 
 const {
 	login,
@@ -26,7 +27,7 @@ router.get('/register', register);
 router.post('/register', registerPost);
 router.get('/logout', logout);
 router.get('/forgot', forgot);
-router.post('/forgot', forgotPost);
+router.post('/forgot', forgotPasswordLimiter, forgotPost);
 router.get('/reset-password/:token', resetPassword);
 router.post('/reset-password/:token', resetPasswordPost);
 router.get('/panel', checkLogin, panel);
