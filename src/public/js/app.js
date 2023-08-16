@@ -111,3 +111,74 @@ function copyAll(idName) {
 	selectElementContents(document.getElementById(idName));
 	document.execCommand('copy');
 }
+
+// change slug of note
+function changeSlug(event) {
+	event.preventDefault();
+
+	const inputSlug = event.target.querySelector('input[name="slug"]');
+
+	fetch('/api/note/change-slug/' + NOTE_ID, {
+		method: 'POST',
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify({ slug: inputSlug.value }),
+	}).then(function (response) {
+		if (!response.ok) {
+			response.json().then(function (result) {
+				alert(result.error);
+			});
+		} else {
+			window.location.href = '/' + inputSlug.value;
+		}
+	});
+}
+
+// set password of note
+(function initEventPasswordModal(modalId) {
+	const removePasswordBtn = document.querySelector(`#${modalId} .remove-pass-btn`);
+	const noteLogoutBtn = document.querySelector(`#${modalId} .note-logout-btn`);
+	const setPasswordBtn = document.querySelector(`#${modalId} .set-pass-btn`);
+	const passwordInput = document.querySelector(`#${modalId} .password-input`);
+
+	removePasswordBtn.onclick = function () {
+		// fetch api to remove pass
+		fetch('/api/note/set-password/' + NOTE_ID, {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ password: '' }),
+		}).then(function (response) {
+			if (response.ok) {
+				removePasswordBtn.parentElement.classList.add('hidden-force');
+				passwordInput.classList.remove('hidden-force');
+				setPasswordBtn.parentElement.classList.remove('hidden-force');
+			} else {
+				response.json().then(function (result) {
+					alert(result.error);
+				});
+			}
+			toggleModal(modalId);
+		});
+	};
+
+	setPasswordBtn.onclick = function () {
+		if (!passwordInput.value) return toggleModal(modalId);
+
+		// fetch api to remove pass
+		fetch('/api/note/set-password/' + NOTE_ID, {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ password: passwordInput.value }),
+		}).then(function (response) {
+			if (response.ok) {
+				setPasswordBtn.parentElement.classList.add('hidden-force');
+				passwordInput.classList.add('hidden-force');
+				removePasswordBtn.parentElement.classList.remove('hidden-force');
+			} else {
+				response.json().then(function (result) {
+					alert(result.error);
+				});
+			}
+			toggleModal(modalId);
+		});
+	};
+})('modal_password');

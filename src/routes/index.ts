@@ -3,12 +3,13 @@ import accountRouter from './account.router';
 import apiRouter from './api.router';
 import { noteController } from '@controllers/index';
 
-const { write, share, raw, code, markdown, userBackup } = noteController;
+const { write, share, raw, code, markdown, userBackup, noteLogin } = noteController;
 
 const mountRoutes = (app: Express) => {
 	app.use('/account', accountRouter);
 	app.use('/api', apiRouter);
 	app.get('/:slug', write);
+	app.get('/login/:slug', noteLogin);
 	app.get('/share/:externalSlug', share);
 	app.get('/raw/:externalSlug', raw);
 	app.get('/code/:externalSlug', code);

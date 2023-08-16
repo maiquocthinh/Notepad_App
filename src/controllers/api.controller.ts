@@ -7,11 +7,17 @@ import {
 	downloadNoteService,
 	revokeSessionService,
 	setPasswordForNoteService,
+	changeNoteSlugService,
 } from '@services/api.services';
 
 // ╔═══════════╗
 // ║	API    ║
 // ╚═══════════╝
+
+// [POST] /api/note/set-password/:noteId
+export const changeNoteSlug = async (req: Request, res: Response) => {
+	return changeNoteSlugService(req, res);
+};
 
 // [POST] /api/note/set-password/:noteId
 export const setPasswordForNote = async (req: Request, res: Response) => {

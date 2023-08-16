@@ -23,7 +23,7 @@ export const writeService = async (req: Request, res: Response) => {
 
 		if (note?.needPassword) {
 			// redirect to login
-			return res.status(200).send('Need Login :))');
+			return res.redirect('/login/' + slug);
 		} else {
 			// render note
 			return res.status(200).render('write', {

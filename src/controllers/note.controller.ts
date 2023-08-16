@@ -4,8 +4,13 @@ import { writeService } from '@services/note.services';
 // ╔════════════╗
 // ║	PAGE	║
 // ╚════════════╝
+
 export const write = async (req: Request, res: Response) => {
 	return writeService(req, res);
+};
+
+export const noteLogin = async (req: Request, res: Response) => {
+	return res.status(200).render('note_login');
 };
 
 export const share = async (req: Request, res: Response) => {

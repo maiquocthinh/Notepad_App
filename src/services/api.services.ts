@@ -3,6 +3,25 @@ import { Readable } from 'stream';
 import bcrypt from 'bcryptjs';
 import { Note, BackupNote, Session } from '@models/index';
 
+export const changeNoteSlugService = async (req: Request, res: Response) => {
+	try {
+		const noteId = req.params.noteId;
+		const slug = req.body.slug;
+
+		if (!noteId) throw new Error('Change note slu fail!');
+
+		const note = await Note.findByPk(noteId);
+		if (!note) throw new Error('Change note slu fail!');
+
+		note.slug = slug;
+		await note.save();
+
+		return res.status(200).json({ message: 'Change note slug success!' });
+	} catch (error: any) {
+		return res.status(400).json({ message: error.message });
+	}
+};
+
 export const setPasswordForNoteService = async (req: Request, res: Response) => {
 	try {
 		const noteId = req.params.noteId;
