@@ -49,26 +49,62 @@ export const checkSessionOfUser = (req: Request, res: Response, next: NextFuncti
 };
 
 export const checkNotLoggedInNote = async (req: Request, res: Response, next: NextFunction) => {
-	const slug = req.params?.slug;
+	const { slug, externalSlug } = req.params;
 	const notesLoggedIn = req.session.notesLoggedIn;
 
-	const note = await Note.findOne({ where: { slug }, attributes: ['needPassword'] });
-	if (!note?.needPassword) return next();
+	if (slug) {
+		// get note from db
+		const note = await Note.findOne({ where: { slug }, attributes: ['needPassword'] });
 
-	if (!notesLoggedIn?.includes(slug)) return res.redirect('/login/' + slug);
+		// if note don't need password, go to note
+		if (!note?.needPassword) return next();
 
+		// if note no logged in, redirect to login page
+		if (!notesLoggedIn?.includes(slug)) return res.redirect('/login/' + slug);
+	} else if (externalSlug) {
+		const shareType = req.url.match(/\/([^\/]+)\//)?.[1];
+
+		// get note from db
+		const note = await Note.findOne({ where: { externalSlug }, attributes: ['slug', 'needPassword'] });
+
+		// if note don't need password, go to note
+		if (!note?.needPassword) return next();
+
+		// if note no logged in, redirect to login page
+		if (!notesLoggedIn?.includes(note.slug)) return res.redirect(`/login/${shareType}/${externalSlug}`);
+	}
 	return next();
 };
 
 export const checkLoggedInNote = async (req: Request, res: Response, next: NextFunction) => {
-	const slug = req.params.slug;
+	const { slug, externalSlug, shareType } = req.params;
 	const notesLoggedIn = req.session.notesLoggedIn;
 
-	if (notesLoggedIn?.includes(slug)) return res.redirect('/' + slug);
+	if (slug) {
+		// if note logged in, redirect to note (skip login)
+		if (notesLoggedIn?.includes(slug)) return res.redirect('/' + slug);
 
-	const note = await Note.findOne({ where: { slug }, attributes: ['needPassword'] });
-	if (!note) return res.redirect('/' + slug);
-	if (!note.needPassword) return res.redirect('/' + slug);
+		// get note from db
+		const note = await Note.findOne({ where: { slug }, attributes: ['needPassword'] });
+
+		// if note not exists, redirect to create new note
+		if (!note) return res.redirect('/' + slug);
+
+		// if note don't need password, redirect to note
+		if (!note.needPassword) return res.redirect('/' + slug);
+	} else if (externalSlug) {
+		// get note from db
+		const note = await Note.findOne({ where: { externalSlug }, attributes: ['slug', 'needPassword'] });
+
+		// if note not exists, redirect to create new note
+		if (!note) return res.redirect('/' + slug);
+
+		// if note logged in, redirect to note(share link) (skip login)
+		if (notesLoggedIn?.includes(note.slug)) return res.redirect(`/${shareType}/${externalSlug}`);
+
+		// if note don't need password, redirect to note(share link)
+		if (!note.needPassword) return res.redirect(`/${shareType}/${externalSlug}`);
+	}
 
 	return next();
 };

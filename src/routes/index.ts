@@ -11,10 +11,11 @@ const mountRoutes = (app: Express) => {
 	app.use('/api', apiRouter);
 	app.get('/:slug', checkNotLoggedInNote, write);
 	app.get('/login/:slug', checkLoggedInNote, noteLogin);
-	app.get('/share/:externalSlug', share);
-	app.get('/raw/:externalSlug', raw);
-	app.get('/code/:externalSlug', code);
-	app.get('/markdown/:externalSlug', markdown);
+	app.get('/login/:shareType/:externalSlug', checkLoggedInNote, noteLogin);
+	app.get('/share/:externalSlug', checkNotLoggedInNote, share);
+	app.get('/raw/:externalSlug', checkNotLoggedInNote, raw);
+	app.get('/code/:externalSlug', checkNotLoggedInNote, code);
+	app.get('/markdown/:externalSlug', checkNotLoggedInNote, markdown);
 	app.get('/user-backup/:backupNoteId', userBackup);
 	app.get('/', write);
 };

@@ -2,35 +2,65 @@ import { Request, Response } from 'express';
 import { Readable } from 'stream';
 import bcrypt from 'bcryptjs';
 import { Note, BackupNote, Session } from '@models/index';
+import { ValidationError, validateOrReject } from 'class-validator';
+import { plainToClass } from 'class-transformer';
+import { NoteLoginParams } from 'src/types/account.types';
 
 export const noteLoginService = async (req: Request, res: Response) => {
 	try {
-		const slug = req.params.slug;
-		const password = req.body.password;
+		const data = plainToClass(NoteLoginParams, req.body);
 
-		if (!slug) throw new Error('Login into note fail!');
+		// validate
+		await validateOrReject(data);
 
-		const note = await Note.findOne({ where: { slug }, attributes: ['needPassword', 'hashPassword'] });
-		if (!note) throw new Error('Login into note fail!');
+		const { slug, externalSlug, password } = data;
+		let note = undefined;
 
-		if (!note.needPassword) throw new Error('Login fail. This note do not have password!');
+		if (slug) {
+			note = await Note.findOne({ where: { slug }, attributes: ['needPassword', 'hashPassword'] });
 
-		// compare password of note
-		if (!bcrypt.compareSync(password, note.hashPassword as string)) throw new Error('Login fail. Password wrong!');
+			if (!note) throw new Error('Login into note fail!');
 
-		// update session notesLoggedIn
-		if (Array.isArray(req.session.notesLoggedIn)) req.session.notesLoggedIn.push(slug);
-		else req.session.notesLoggedIn = [slug];
+			if (!note.needPassword) throw new Error('Login fail. This note do not have password!');
+
+			// compare password of note
+			if (!bcrypt.compareSync(password, note.hashPassword as string)) throw new Error('Login fail. Password wrong!');
+
+			// update session notesLoggedIn
+			if (Array.isArray(req.session.notesLoggedIn)) req.session.notesLoggedIn.push(slug);
+			else req.session.notesLoggedIn = [slug];
+		} else if (externalSlug) {
+			note = await Note.findOne({ where: { externalSlug }, attributes: ['slug', 'needPassword', 'hashPassword'] });
+
+			if (!note) throw new Error('Login into note fail!');
+
+			if (!note.needPassword) throw new Error('Login fail. This note do not have password!');
+
+			// compare password of note
+			if (!bcrypt.compareSync(password, note.hashPassword as string)) throw new Error('Login fail. Password wrong!');
+
+			// update session notesLoggedIn
+			if (Array.isArray(req.session.notesLoggedIn)) req.session.notesLoggedIn.push(note.slug);
+			else req.session.notesLoggedIn = [note.slug];
+		} else {
+			throw new Error('Login into note fail!');
+		}
 
 		return res.status(200).json({ message: 'Login into note success!' });
-	} catch (error: any) {
-		return res.status(400).json({ error: error.message });
+	} catch (errors: any) {
+		if (Array.isArray(errors) && errors.every((error) => error instanceof ValidationError)) {
+			return res.status(400).json({
+				errors: errors.map((error) => error.constraints && Object.values(error.constraints)).flat(),
+			});
+		} else {
+			return res.status(400).json({ error: errors.message });
+		}
 	}
 };
 
 export const noteLogoutService = async (req: Request, res: Response) => {
 	try {
-		const noteSlug = req.params.slug;
+		const noteSlug = req.body.slug;
 
 		if (!noteSlug) throw new Error('Logout from note fail!');
 

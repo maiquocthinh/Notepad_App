@@ -14,8 +14,8 @@ const router = Router();
 
 const { setPasswordForNote, deleteNote, backupNote, downloadNote } = apiController;
 
-router.post('/note/login/:slug', noteLogin);
-router.delete('/note/logout/:slug', noteLogout);
+router.post('/note/login', noteLogin);
+router.delete('/note/logout', noteLogout);
 router.post('/note/change-slug/:noteId', changeNoteSlug);
 router.post('/note/set-password/:noteId', setPasswordForNote);
 router.delete('/note/delete/:noteId', checkLogin, checkNoteBelongToUser, deleteNote);

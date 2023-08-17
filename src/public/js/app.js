@@ -187,7 +187,11 @@ function changeSlug(event) {
 	noteLogoutBtn.onclick = function () {
 		const NOTE_SLUG = window.location.href.match(/\/([^\/]+)$/)[1];
 
-		fetch('/api/note/logout/' + NOTE_SLUG, { method: 'DELETE' }).then(function (response) {
+		fetch('/api/note/logout', {
+			method: 'DELETE',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ slug: NOTE_SLUG }),
+		}).then(function (response) {
 			if (response.ok) {
 				window.location.href = '/login/' + NOTE_SLUG;
 			} else {

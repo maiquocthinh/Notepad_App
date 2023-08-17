@@ -94,3 +94,16 @@ export class ResetPasswordParams {
 export type ResetPasswordPayload = {
 	username: string;
 };
+
+export class NoteLoginParams {
+	@IsOptional()
+	@IsString()
+	slug!: string;
+
+	@IsOptional()
+	@IsString()
+	externalSlug!: string;
+
+	@IsString()
+	password!: string;
+}

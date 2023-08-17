@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { writeService } from '@services/note.services';
+import { writeService, renderNoteLogin } from '@services/note.services';
 
 // ╔════════════╗
 // ║	PAGE	║
@@ -10,7 +10,7 @@ export const write = async (req: Request, res: Response) => {
 };
 
 export const noteLogin = async (req: Request, res: Response) => {
-	return res.status(200).render('note_login');
+	return renderNoteLogin(req, res);
 };
 
 export const share = async (req: Request, res: Response) => {

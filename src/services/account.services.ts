@@ -257,8 +257,6 @@ export const handleResetPasswordService = async (req: Request, res: Response) =>
 	try {
 		const data = plainToClass(ResetPasswordParams, req.body);
 
-		console.log(data);
-
 		// validate
 		await validateOrReject(data);
 

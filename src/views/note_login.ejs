@@ -16,30 +16,68 @@
             </div>
         </div>
     </div>
+    <% if(typeof slug !== 'undefined') { %>
     <script>
-        const NOTE_SLUG = window.location.href.match(/\/([^\/]+)$/)[1];
-        const passwordInput = document.getElementById('password');
-        const loginBtn = document.getElementById('login-btn');
+        {
+            const NOTE_SLUG = '<%= slug %>';
+            const passwordInput = document.getElementById('password');
+            const loginBtn = document.getElementById('login-btn');
 
-        loginBtn.onclick = function(){
-            const password = passwordInput.value
+            loginBtn.onclick = function(){
+                const password = passwordInput.value
 
-            fetch('/api/note/login/' + NOTE_SLUG, {
-                method: 'POST', 
-                headers: { 'Content-Type': 'application/json' },
-			    body: JSON.stringify({ password }),
-            }).then(function (response) {
-			if (response.ok) {
-				window.location.href = '/' + NOTE_SLUG;
-			} else {
-				response.json().then(function (result) {
-					alert(result.error);
-				});
-			}
-		});
-
+                fetch('/api/note/login', {
+                    method: 'POST', 
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ slug: NOTE_SLUG, password }),
+                }).then(function (response) {
+                    if (response.ok) {
+                        window.location.href = '/' + NOTE_SLUG;
+                    } else {
+                        response.json().then(function (result) {
+                            if(result.errors){
+                                alert(result.errors.join('/n'));
+                            }else if(result.error){
+                                alert(result.error);
+                            }
+                        });
+                    }
+                });
+            }
         }
-
     </script>
+    <% } %>
+    <% if(typeof externalSlug !== 'undefined') { %>
+    <script>
+        {
+            const NOTE_EXTERNAL_SLUG = '<%= externalSlug %>';
+            const SHARE_TYPE = '<%= shareType %>';
+            const passwordInput = document.getElementById('password');
+            const loginBtn = document.getElementById('login-btn');
+    
+            loginBtn.onclick = function(){
+                const password = passwordInput.value
+    
+                fetch('/api/note/login', {
+                    method: 'POST', 
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ externalSlug: NOTE_EXTERNAL_SLUG,password }),
+                }).then(function (response) {
+                    if (response.ok) {
+                        window.location.href = `/${SHARE_TYPE}/${NOTE_EXTERNAL_SLUG}`;
+                    } else {
+                        response.json().then(function (result) {
+                            if(result.errors){
+                                alert(result.errors.join('/n'));
+                            }else if(result.error){
+                                alert(result.error);
+                            }
+                        });
+                    }
+                });
+            }
+        }
+    </script>
+    <% } %>
 </body>
 </html>

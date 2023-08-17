@@ -7,7 +7,11 @@ export const writeService = async (req: Request, res: Response) => {
 		const slug = req.params?.slug;
 
 		// if note don't exist create new note
-		const note = (await Note.findOne({ where: { slug } })) || (await Note.create({ slug }, { returning: ['slug'] }));
+		const note = slug && (await Note.findOne({ where: { slug } }));
+		if (!note) {
+			const note = await Note.create({ slug }, { returning: ['slug'] });
+			return res.redirect('/' + note.slug);
+		}
 
 		return res.status(200).render('write', {
 			note: {
@@ -17,5 +21,23 @@ export const writeService = async (req: Request, res: Response) => {
 		});
 	} catch (error: any) {
 		throw error;
+	}
+};
+
+export const renderNoteLogin = async (req: Request, res: Response) => {
+	const { slug, externalSlug, shareType } = req.params;
+
+	if (slug) {
+		// check note
+		const note = slug && (await Note.findOne({ where: { slug } }));
+		if (!note) return res.redirect('/' + slug);
+
+		return res.status(200).render('note_login', { slug });
+	} else {
+		// check note
+		const note = externalSlug && (await Note.findOne({ where: { externalSlug } }));
+		if (!note) return res.redirect('/' + externalSlug);
+
+		return res.status(200).render('note_login', { externalSlug, shareType });
 	}
 };
