@@ -24,6 +24,8 @@ app.use(
 				'default-src': ["'self'"],
 				'script-src': ["'self'", "'unsafe-inline'"],
 				'script-src-attr': ["'unsafe-inline'"],
+				'style-src': ["'self'"],
+				'style-src-elem': ["'self'", "'unsafe-inline'"],
 				'img-src': ['*'],
 				'connect-src': ["'self'", 'https://tame-red-clownfish-tutu.cyclic.app'],
 			},

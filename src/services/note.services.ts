@@ -1,6 +1,8 @@
-import Note from '@models/note.model';
-import { calculateElapsedTime } from '@utils/time';
 import { Request, Response } from 'express';
+import MarkdownIt from 'markdown-it';
+import { User, Note, BackupNote } from '@models/index';
+import env from '@utils/env';
+import { calculateElapsedTime } from '@utils/time';
 
 export const writeService = async (req: Request, res: Response) => {
 	try {
@@ -29,15 +31,89 @@ export const renderNoteLogin = async (req: Request, res: Response) => {
 
 	if (slug) {
 		// check note
-		const note = slug && (await Note.findOne({ where: { slug } }));
+		const note = slug && (await Note.findOne({ where: { slug }, attributes: ['id'] }));
 		if (!note) return res.redirect('/' + slug);
 
 		return res.status(200).render('note_login', { slug });
 	} else {
 		// check note
-		const note = externalSlug && (await Note.findOne({ where: { externalSlug } }));
+		const note = externalSlug && (await Note.findOne({ where: { externalSlug }, attributes: ['id'] }));
 		if (!note) return res.redirect('/' + externalSlug);
 
 		return res.status(200).render('note_login', { externalSlug, shareType });
 	}
+};
+
+export const renderShareNote = async (req: Request, res: Response) => {
+	const externalSlug = req.params.externalSlug;
+	const title = `${new URL(env.SITE_URL).host} / share / ${externalSlug}`;
+
+	const note =
+		externalSlug &&
+		(await Note.findOne({
+			where: { externalSlug },
+			attributes: ['content'],
+			include: [
+				{
+					model: User,
+					attributes: ['username'],
+				},
+			],
+		}));
+	if (!note) return res.status(404).json({ error: 'Page Note Found!' });
+
+	return res.status(200).render('share', { note, title });
+};
+
+export const renderRawNote = async (req: Request, res: Response) => {
+	const externalSlug = req.params.externalSlug;
+
+	const note = externalSlug && (await Note.findOne({ where: { externalSlug }, attributes: ['content'] }));
+	if (!note) return res.status(404).json({ error: 'Page Note Found!' });
+
+	return res.status(200).send(note.content);
+};
+
+export const renderCodeNote = async (req: Request, res: Response) => {
+	const externalSlug = req.params.externalSlug;
+	const title = `${new URL(env.SITE_URL).host} / code / ${externalSlug}`;
+
+	const note =
+		externalSlug &&
+		(await Note.findOne({
+			where: { externalSlug },
+			attributes: ['content'],
+			include: [
+				{
+					model: User,
+					attributes: ['username'],
+				},
+			],
+		}));
+	if (!note) return res.status(404).json({ error: 'Page Note Found!' });
+
+	return res.status(200).render('code', { note, title });
+};
+
+export const renderMarkdownNote = async (req: Request, res: Response) => {
+	const externalSlug = req.params.externalSlug;
+	const title = `${new URL(env.SITE_URL).host} / markdown / ${externalSlug}`;
+
+	const note = externalSlug && (await Note.findOne({ where: { externalSlug }, attributes: ['content'] }));
+	if (!note) return res.status(404).json({ error: 'Page Note Found!' });
+
+	const md = new MarkdownIt();
+	const content = md.render(note.content);
+
+	return res.status(200).render('markdown', { content, title });
+};
+
+export const renderBackupNote = async (req: Request, res: Response) => {
+	const backupNoteId = req.params.backupNoteId;
+	const title = `${new URL(env.SITE_URL).host} / user-backup / ${backupNoteId}`;
+
+	const backupNote = backupNoteId && (await BackupNote.findOne({ where: { id: backupNoteId }, attributes: ['content'] }));
+	if (!backupNote) return res.status(404).json({ error: 'Page Note Found!' });
+
+	return res.status(200).render('backup', { backupNote, title });
 };

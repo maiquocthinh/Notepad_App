@@ -140,65 +140,68 @@ function changeSlug(event) {
 	const setPasswordBtn = document.querySelector(`#${modalId} .set-pass-btn`);
 	const passwordInput = document.querySelector(`#${modalId} .password-input`);
 
-	removePasswordBtn.onclick = function () {
-		// fetch api to remove pass
-		fetch('/api/note/set-password/' + NOTE_ID, {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({ password: '' }),
-		}).then(function (response) {
-			if (response.ok) {
-				removePasswordBtn.parentElement.classList.add('hidden-force');
-				passwordInput.classList.remove('hidden-force');
-				setPasswordBtn.parentElement.classList.remove('hidden-force');
-				noteLogoutBtn.dispatchEvent(new Event('click'));
-			} else {
-				response.json().then(function (result) {
-					alert(result.error);
-				});
-			}
-			toggleModal(modalId);
-		});
-	};
+	if (removePasswordBtn)
+		removePasswordBtn.onclick = function () {
+			// fetch api to remove pass
+			fetch('/api/note/set-password/' + NOTE_ID, {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ password: '' }),
+			}).then(function (response) {
+				if (response.ok) {
+					removePasswordBtn.parentElement.classList.add('hidden-force');
+					passwordInput.classList.remove('hidden-force');
+					setPasswordBtn.parentElement.classList.remove('hidden-force');
+					noteLogoutBtn.dispatchEvent(new Event('click'));
+				} else {
+					response.json().then(function (result) {
+						alert(result.error);
+					});
+				}
+				toggleModal(modalId);
+			});
+		};
 
-	setPasswordBtn.onclick = function () {
-		if (!passwordInput.value) return toggleModal(modalId);
+	if (setPasswordBtn)
+		setPasswordBtn.onclick = function () {
+			if (!passwordInput.value) return toggleModal(modalId);
 
-		// fetch api to remove pass
-		fetch('/api/note/set-password/' + NOTE_ID, {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({ password: passwordInput.value }),
-		}).then(function (response) {
-			if (response.ok) {
-				passwordInput.value = '';
-				setPasswordBtn.parentElement.classList.add('hidden-force');
-				passwordInput.classList.add('hidden-force');
-				removePasswordBtn.parentElement.classList.remove('hidden-force');
-			} else {
-				response.json().then(function (result) {
-					alert(result.error);
-				});
-			}
-			toggleModal(modalId);
-		});
-	};
+			// fetch api to remove pass
+			fetch('/api/note/set-password/' + NOTE_ID, {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ password: passwordInput.value }),
+			}).then(function (response) {
+				if (response.ok) {
+					passwordInput.value = '';
+					setPasswordBtn.parentElement.classList.add('hidden-force');
+					passwordInput.classList.add('hidden-force');
+					removePasswordBtn.parentElement.classList.remove('hidden-force');
+				} else {
+					response.json().then(function (result) {
+						alert(result.error);
+					});
+				}
+				toggleModal(modalId);
+			});
+		};
 
-	noteLogoutBtn.onclick = function () {
-		const NOTE_SLUG = window.location.href.match(/\/([^\/]+)$/)[1];
+	if (noteLogoutBtn)
+		noteLogoutBtn.onclick = function () {
+			const NOTE_SLUG = window.location.href.match(/\/([^\/]+)$/)[1];
 
-		fetch('/api/note/logout', {
-			method: 'DELETE',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({ slug: NOTE_SLUG }),
-		}).then(function (response) {
-			if (response.ok) {
-				window.location.href = '/login/' + NOTE_SLUG;
-			} else {
-				response.json().then(function (result) {
-					alert(result.error);
-				});
-			}
-		});
-	};
+			fetch('/api/note/logout', {
+				method: 'DELETE',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ slug: NOTE_SLUG }),
+			}).then(function (response) {
+				if (response.ok) {
+					window.location.href = '/login/' + NOTE_SLUG;
+				} else {
+					response.json().then(function (result) {
+						alert(result.error);
+					});
+				}
+			});
+		};
 })('modal_password');

@@ -4,7 +4,7 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<link rel="stylesheet" href="/css/style.css">
-		<title>Backup Note</title>
+		<title><%= title %></title>
 	</head>
 	<body class="bg-slate-100 font-mono text-zinc-500">
 		<div class="m-auto my-8 max-w-5xl h-full">
@@ -22,9 +22,7 @@
 					</div>
 					<hr class="mt-2 mb-4">
 					<div class="flex-grow">
-						<pre class="min-h-[400px] max-h-[400px] overflow-x-auto whitespace-pre-wrap text-gray-800" id="pre-text">'use client'
-import i18next, { KeyPrefix, Namespace } from 'i18next'
-import resourcesToBackend from 'i18next-resources-to-backend'</pre>
+						<pre class="min-h-[400px] max-h-[70vh] md:max-h-[60vh] overflow-x-auto whitespace-pre-wrap text-gray-800" id="pre-text"><%= backupNote.content %></pre>
 					</div>
 					<hr class="my-4">
 					<div>

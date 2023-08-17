@@ -1,34 +1,42 @@
 import { Request, Response } from 'express';
-import { writeService, renderNoteLogin } from '@services/note.services';
+import {
+	writeService,
+	renderNoteLogin,
+	renderShareNote,
+	renderRawNote,
+	renderCodeNote,
+	renderMarkdownNote,
+	renderBackupNote,
+} from '@services/note.services';
 
 // ╔════════════╗
 // ║	PAGE	║
 // ╚════════════╝
 
 export const write = async (req: Request, res: Response) => {
-	return writeService(req, res);
+	return await writeService(req, res);
 };
 
 export const noteLogin = async (req: Request, res: Response) => {
-	return renderNoteLogin(req, res);
+	return await renderNoteLogin(req, res);
 };
 
 export const share = async (req: Request, res: Response) => {
-	return res.status(200).render('share');
+	return await renderShareNote(req, res);
 };
 
 export const raw = async (req: Request, res: Response) => {
-	return res.status(200).send('raw');
+	return await renderRawNote(req, res);
 };
 
 export const code = async (req: Request, res: Response) => {
-	return res.status(200).render('code');
+	return await renderCodeNote(req, res);
 };
 
 export const markdown = async (req: Request, res: Response) => {
-	return res.status(200).render('markdown');
+	return await renderMarkdownNote(req, res);
 };
 
 export const userBackup = async (req: Request, res: Response) => {
-	return res.status(200).render('backup');
+	return renderBackupNote(req, res);
 };

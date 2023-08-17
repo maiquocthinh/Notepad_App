@@ -727,8 +727,8 @@ video {
   height: 100%;
 }
 
-.max-h-\[400px\] {
-  max-height: 400px;
+.max-h-\[70vh\] {
+  max-height: 70vh;
 }
 
 .min-h-\[400px\] {
@@ -1487,6 +1487,10 @@ video {
 
   .md\:-m-5 {
     margin: -1.25rem;
+  }
+
+  .md\:max-h-\[60vh\] {
+    max-height: 60vh;
   }
 
   .md\:grid-cols-2 {
