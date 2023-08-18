@@ -1,11 +1,20 @@
 import express from 'express';
+import http from 'http';
 import { Server, Socket } from 'socket.io';
-import debounce from '@utils/debounce';
 import { updateNoteContent } from '@services/note.services';
+import { sessionMiddleware } from '@config/session';
+import debounce from '@utils/debounce';
+import env from '@utils/env';
+
+type DataEditing = {
+	roomId: string;
+	content: string;
+	cursorLocation: number;
+};
 
 const debounceUpdateNoteContent = debounce(updateNoteContent, 5000);
 
-export const socketConfig = (io: Server, sessionMiddleware: express.RequestHandler) => {
+const socketConfig = (io: Server, sessionMiddleware: express.RequestHandler) => {
 	// use session middleware
 	io.engine.use(sessionMiddleware);
 
@@ -33,8 +42,14 @@ export const socketConfig = (io: Server, sessionMiddleware: express.RequestHandl
 	});
 };
 
-type DataEditing = {
-	roomId: string;
-	content: string;
-	cursorLocation: number;
+const initSocketServer = (server: http.Server) => {
+	const io: Server = new Server(server, {
+		cors: {
+			origin: env.SITE_URL,
+			methods: ['GET', 'POST'],
+		},
+	});
+	socketConfig(io, sessionMiddleware);
 };
+
+export default initSocketServer;
