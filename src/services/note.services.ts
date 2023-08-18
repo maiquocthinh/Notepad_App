@@ -60,7 +60,7 @@ export const renderShareNote = async (req: Request, res: Response) => {
 				},
 			],
 		}));
-	if (!note) return res.status(404).json({ error: 'Page Note Found!' });
+	if (!note) return res.status(404).render('404');
 
 	return res.status(200).render('share', { note, title });
 };
@@ -69,7 +69,7 @@ export const renderRawNote = async (req: Request, res: Response) => {
 	const externalSlug = req.params.externalSlug;
 
 	const note = externalSlug && (await Note.findOne({ where: { externalSlug }, attributes: ['content'] }));
-	if (!note) return res.status(404).json({ error: 'Page Note Found!' });
+	if (!note) return res.status(404).render('404');
 
 	return res.status(200).type('text').send(note.content);
 };
@@ -90,7 +90,7 @@ export const renderCodeNote = async (req: Request, res: Response) => {
 				},
 			],
 		}));
-	if (!note) return res.status(404).json({ error: 'Page Note Found!' });
+	if (!note) return res.status(404).render('404');
 
 	return res.status(200).render('code', { note, title });
 };
@@ -100,7 +100,7 @@ export const renderMarkdownNote = async (req: Request, res: Response) => {
 	const title = `${new URL(env.SITE_URL).host} / markdown / ${externalSlug}`;
 
 	const note = externalSlug && (await Note.findOne({ where: { externalSlug }, attributes: ['content'] }));
-	if (!note) return res.status(404).json({ error: 'Page Note Found!' });
+	if (!note) return res.status(404).render('404');
 
 	const md = new MarkdownIt();
 	const content = md.render(note.content);
@@ -113,7 +113,7 @@ export const renderBackupNote = async (req: Request, res: Response) => {
 	const title = `${new URL(env.SITE_URL).host} / user-backup / ${backupNoteId}`;
 
 	const backupNote = backupNoteId && (await BackupNote.findOne({ where: { id: backupNoteId }, attributes: ['content'] }));
-	if (!backupNote) return res.status(404).json({ error: 'Page Note Found!' });
+	if (!backupNote) return res.status(404).render('404');
 
 	return res.status(200).render('backup', { backupNote, title });
 };

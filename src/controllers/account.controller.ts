@@ -2,9 +2,9 @@ import { NextFunction, Request, Response } from 'express';
 import svgCaptcha, { CaptchaObj } from 'svg-captcha';
 import bcrypt from 'bcryptjs';
 import {
-	createAccount,
-	handleLogin,
-	renderPanel,
+	createAccountService,
+	handleLoginService,
+	renderPanelService,
 	updateAccountService,
 	forgotPasswordService,
 	renderResetPasswordService,
@@ -23,7 +23,7 @@ export const login = async (req: Request, res: Response) => {
 
 // [POST] /account/login
 export const loginPost = async (req: Request, res: Response) => {
-	return handleLogin(req, res);
+	return handleLoginService(req, res);
 };
 
 // [GET] /account/register
@@ -34,7 +34,7 @@ export const register = async (req: Request, res: Response) => {
 
 // [GET] /account/register
 export const registerPost = async (req: Request, res: Response) => {
-	return await createAccount(req, res);
+	return await createAccountService(req, res);
 };
 
 // [GET] /account/logout
@@ -67,7 +67,7 @@ export const resetPasswordPost = async (req: Request, res: Response) => {
 
 // [GET] /account/panel
 export const panel = async (req: Request, res: Response) => {
-	return await renderPanel(req, res);
+	return await renderPanelService(req, res);
 };
 
 // [GET] /account/captcha
@@ -84,7 +84,7 @@ export const captcha = async (_req: Request, res: Response) => {
 	res.setHeader('Pragma', 'no-cache');
 	res.setHeader('Expires', '0');
 
-	// save hash captcha to client
+	// save hash captcha to client cookie
 	const hashedCaptcha = bcrypt.hashSync(captcha.text, 10);
 	res.cookie('cc_hash', hashedCaptcha, { httpOnly: true, maxAge: 900000 }); // 15m
 

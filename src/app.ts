@@ -50,10 +50,8 @@ app.set('view engine', 'ejs');
 mountRoutes(app);
 
 // Middleware handle error not found endpoint
-app.use((req: Request, res: Response, next: NextFunction) => {
-	const error = new Error('Page not found!');
-	(error as any).status = 404;
-	next(error);
+app.use((_req: Request, res: Response) => {
+	return res.status(404).render('404');
 });
 
 // Middleware error

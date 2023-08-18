@@ -17,7 +17,7 @@ import { DeviceIcons } from '@config/constants';
 import { sendResetPasswordLink } from '@utils/email';
 import { createToken, verifyToken } from '@utils/jwt';
 
-export const createAccount = async (req: Request, res: Response) => {
+export const createAccountService = async (req: Request, res: Response) => {
 	try {
 		const data = plainToClass(RegisterParams, req.body);
 
@@ -55,7 +55,7 @@ export const createAccount = async (req: Request, res: Response) => {
 	}
 };
 
-export const handleLogin = async (req: Request, res: Response) => {
+export const handleLoginService = async (req: Request, res: Response) => {
 	try {
 		const data = plainToClass(LoginParams, req.body);
 
@@ -98,7 +98,7 @@ export const handleLogin = async (req: Request, res: Response) => {
 	}
 };
 
-export const renderPanel = async (req: Request, res: Response) => {
+export const renderPanelService = async (req: Request, res: Response) => {
 	const userId = req.session.user?.id;
 	const user = await User.findOne({
 		where: { id: userId },
