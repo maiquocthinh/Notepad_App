@@ -112,6 +112,30 @@ function copyAll(idName) {
 	document.execCommand('copy');
 }
 
+// copy text to clipboard
+function copyTextToClipboard(text) {
+	const textArea = document.createElement('textarea');
+	textArea.value = text;
+
+	textArea.style.position = 'fixed';
+	textArea.style.top = 0;
+	textArea.style.left = 0;
+	textArea.style.opacity = 0;
+
+	document.body.appendChild(textArea);
+
+	textArea.select();
+
+	try {
+		document.execCommand('copy');
+		alert('Successfully copied: ' + text);
+	} catch (err) {
+		alert('Error when copying:', err);
+	}
+
+	document.body.removeChild(textArea);
+}
+
 // change slug of note
 function changeSlug(event) {
 	event.preventDefault();

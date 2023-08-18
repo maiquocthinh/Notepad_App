@@ -4,7 +4,7 @@ import { User, Note, BackupNote } from '@models/index';
 import env from '@utils/env';
 import { calculateElapsedTime } from '@utils/time';
 
-export const writeService = async (req: Request, res: Response) => {
+export const renderWriteService = async (req: Request, res: Response) => {
 	try {
 		const slug = req.params?.slug;
 
@@ -56,7 +56,7 @@ export const renderShareNote = async (req: Request, res: Response) => {
 			include: [
 				{
 					model: User,
-					attributes: ['username'],
+					attributes: ['username', 'avatar'],
 				},
 			],
 		}));
@@ -71,7 +71,7 @@ export const renderRawNote = async (req: Request, res: Response) => {
 	const note = externalSlug && (await Note.findOne({ where: { externalSlug }, attributes: ['content'] }));
 	if (!note) return res.status(404).json({ error: 'Page Note Found!' });
 
-	return res.status(200).send(note.content);
+	return res.status(200).type('text').send(note.content);
 };
 
 export const renderCodeNote = async (req: Request, res: Response) => {
@@ -86,7 +86,7 @@ export const renderCodeNote = async (req: Request, res: Response) => {
 			include: [
 				{
 					model: User,
-					attributes: ['username'],
+					attributes: ['username', 'avatar'],
 				},
 			],
 		}));
@@ -116,4 +116,21 @@ export const renderBackupNote = async (req: Request, res: Response) => {
 	if (!backupNote) return res.status(404).json({ error: 'Page Note Found!' });
 
 	return res.status(200).render('backup', { backupNote, title });
+};
+
+export const updateNoteContent = async (noteId: string, noteContent: string, userId?: string) => {
+	try {
+		// get note form db
+		const note = await Note.findByPk(noteId);
+
+		if (!note) return;
+
+		note.content = noteContent;
+		if (note.temporary) {
+			note.userId = userId;
+			note.temporary = false;
+		}
+
+		await note.save();
+	} catch (error) {}
 };

@@ -4,11 +4,10 @@ import morgan from 'morgan';
 import compression from 'compression';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
-import session from 'express-session';
 import path from 'path';
 import env from '@utils/env';
 import mountRoutes from './routes';
-import sessionStore from '@config/sessionStore';
+import { sessionMiddleware } from '@config/session';
 import useragent from 'express-useragent';
 
 const app: Express = express();
@@ -42,18 +41,7 @@ app.use(
 		origin: env.SITE_URL,
 	}),
 );
-app.use(
-	session({
-		secret: env.SESSION_SECRET,
-		resave: false,
-		saveUninitialized: false,
-		cookie: {
-			httpOnly: true,
-			maxAge: 2 * 60 * 60 * 1000, // 2 hours
-		},
-		store: sessionStore,
-	}),
-);
+app.use(sessionMiddleware);
 app.use(express.static(path.join(__dirname, 'public')));
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');

@@ -4,7 +4,7 @@ import bcrypt from 'bcryptjs';
 import { Note, BackupNote, Session } from '@models/index';
 import { ValidationError, validateOrReject } from 'class-validator';
 import { plainToClass } from 'class-transformer';
-import { NoteLoginParams } from 'src/types/account.types';
+import { NoteLoginParams } from '../types/account.types';
 
 export const noteLoginService = async (req: Request, res: Response) => {
 	try {

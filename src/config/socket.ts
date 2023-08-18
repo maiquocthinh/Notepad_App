@@ -1,9 +1,14 @@
-import { createDebounceUpdateNoteContent } from '@utils/debounce';
+import express from 'express';
 import { Server, Socket } from 'socket.io';
+import debounce from '@utils/debounce';
+import { updateNoteContent } from '@services/note.services';
 
-const debounceUpdateNoteContent = createDebounceUpdateNoteContent(5000);
+const debounceUpdateNoteContent = debounce(updateNoteContent, 5000);
 
-export const socketConfig = (io: Server) => {
+export const socketConfig = (io: Server, sessionMiddleware: express.RequestHandler) => {
+	// use session middleware
+	io.engine.use(sessionMiddleware);
+
 	io.on('connection', (socket: Socket) => {
 		console.log('A user connected');
 
@@ -14,7 +19,7 @@ export const socketConfig = (io: Server) => {
 
 		socket.on('editing', (data: DataEditing) => {
 			// update on db
-			debounceUpdateNoteContent(data.roomId, data.content);
+			debounceUpdateNoteContent(data.roomId, data.content, socket.request.session?.user?.id);
 
 			io.to(data.roomId).emit('update', {
 				...data,

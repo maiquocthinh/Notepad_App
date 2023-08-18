@@ -1,4 +1,4 @@
-import Note from '@models/note.model';
+import { updateNoteContent } from '@services/note.services';
 
 const debounce = <T extends (...args: any[]) => void>(func: T, timeout: number = 300): ((...args: Parameters<T>) => void) => {
 	let timer: ReturnType<typeof setTimeout> | undefined;
@@ -10,10 +10,3 @@ const debounce = <T extends (...args: any[]) => void>(func: T, timeout: number =
 	};
 };
 export default debounce;
-
-export const createDebounceUpdateNoteContent = (delay: number = 3000) =>
-	debounce(async (noteId: string, content: string) => {
-		try {
-			await Note.update({ content }, { where: { id: noteId } });
-		} catch (error) {}
-	}, delay);

@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import {
-	writeService,
+	renderWriteService,
 	renderNoteLogin,
 	renderShareNote,
 	renderRawNote,
@@ -14,7 +14,7 @@ import {
 // ╚════════════╝
 
 export const write = async (req: Request, res: Response) => {
-	return await writeService(req, res);
+	return await renderWriteService(req, res);
 };
 
 export const noteLogin = async (req: Request, res: Response) => {

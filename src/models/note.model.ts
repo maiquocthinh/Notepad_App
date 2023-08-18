@@ -33,6 +33,10 @@ class Note extends Model {
 	@Column(DataType.STRING)
 	hashPassword?: string | null;
 
+	@Default(true)
+	@Column(DataType.BOOLEAN)
+	temporary!: boolean;
+
 	@ForeignKey(() => User)
 	@Column(DataType.STRING(12))
 	userId?: string;
