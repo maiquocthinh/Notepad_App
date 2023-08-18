@@ -111,7 +111,7 @@ export const setPasswordForNoteService = async (req: Request, res: Response) => 
 		note.needPassword = !!password;
 		note.hashPassword = password ? bcrypt.hashSync(password, salt) : null;
 
-		await note.save();
+		await note.save({ silent: true });
 
 		if (password) return res.status(200).json({ message: 'Set password for note success!' });
 		else return res.status(200).json({ message: 'Remove password from note success!' });
