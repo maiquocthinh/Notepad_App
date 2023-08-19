@@ -12,7 +12,7 @@ function debounce(func, timeout = 300) {
 	};
 }
 
-const socket = io('ws://localhost:3003');
+const socket = io(`ws://${location.host}`);
 
 socket.emit('joinRoom', NOTE_ID);
 

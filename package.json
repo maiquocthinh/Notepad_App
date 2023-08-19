@@ -5,8 +5,8 @@
   "scripts": {
     "dev": "nodemon",
     "clean-build": "rimraf ./dist",
-    "copy-views": "cpy ./src/views/**/* ./dist/views",
-    "copy-public": "cpy ./src/public/**/* ./dist/public && rimraf ./dist/public/css/tailwind.css",
+    "copy-views": "ncp ./src/views ./dist/views",
+    "copy-public": "ncp ./src/public ./dist/public && rimraf ./dist/public/css/tailwind.css",
     "build": "yarn clean-build && tsc && tsc-alias && yarn copy-views && yarn copy-public",
     "start": "node ./dist/server.js",
     "tailwind": "tailwind build -i ./src/public/css/tailwind.css -o ./src/public/css/style.css -w"
@@ -27,7 +27,7 @@
     "@types/pg": "^8.10.2",
     "@types/sequelize": "^4.28.15",
     "autoprefixer": "^10.4.14",
-    "cpy-cli": "^5.0.0",
+    "ncp": "^2.0.0",
     "nodemon": "^3.0.1",
     "postcss": "^8.4.27",
     "rimraf": "^5.0.1",

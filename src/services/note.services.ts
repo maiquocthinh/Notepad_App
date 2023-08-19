@@ -20,6 +20,7 @@ export const renderWriteService = async (req: Request, res: Response) => {
 				...note?.dataValues,
 				lastUpdated: calculateElapsedTime(note?.updatedAt),
 			},
+			title: `${new URL(env.SITE_URL).host} / share / ${note.slug}`,
 		});
 	} catch (error: any) {
 		throw error;
