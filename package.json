@@ -8,7 +8,7 @@
     "copy-views": "ncp ./src/views ./dist/views",
     "copy-public": "ncp ./src/public ./dist/public && rimraf ./dist/public/css/tailwind.css",
     "build": "yarn clean-build && tsc && tsc-alias && yarn copy-views && yarn copy-public",
-    "start": "node ./dist/server.js",
+    "start": "NODE_ENV=production node ./dist/server.js",
     "tailwind": "tailwind build -i ./src/public/css/tailwind.css -o ./src/public/css/style.css -w"
   },
   "license": "MIT",

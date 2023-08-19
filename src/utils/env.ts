@@ -3,6 +3,7 @@ import { cleanEnv, port, str } from 'envalid';
 dotenv.config();
 
 const env = cleanEnv(process.env, {
+	NODE_ENV: str({ default: 'development' }),
 	PORT: port({ default: 8080 }),
 	SITE_URL: str(),
 	SESSION_SECRET: str(),

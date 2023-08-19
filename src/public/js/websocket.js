@@ -12,7 +12,7 @@ function debounce(func, timeout = 300) {
 	};
 }
 
-const socket = io(`ws://${location.host}`);
+const socket = io(window.location.protocol === 'https:' ? `wss://${location.host}` : `ws://${location.host}`);
 
 socket.emit('joinRoom', NOTE_ID);
 

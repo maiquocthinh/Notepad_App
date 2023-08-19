@@ -1,36 +1,21 @@
 import express, { Express, Request, Response, NextFunction } from 'express';
-import helmet from 'helmet';
 import morgan from 'morgan';
 import compression from 'compression';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
-import path from 'path';
-import env from '@utils/env';
-import mountRoutes from './routes';
-import { sessionMiddleware } from '@config/session';
 import useragent from 'express-useragent';
+import path from 'path';
+import mountRoutes from './routes';
+import env from '@utils/env';
+import { sessionMiddleware } from '@config/session';
+import { helmetMiddleware } from '@config/helmet';
 
 const app: Express = express();
 
 // Express configuration
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(
-	helmet({
-		contentSecurityPolicy: {
-			useDefaults: false,
-			directives: {
-				'default-src': ["'self'"],
-				'script-src': ["'self'", "'unsafe-inline'", 'https://cdnjs.cloudflare.com'],
-				'script-src-attr': ["'unsafe-inline'"],
-				'style-src': ["'self'"],
-				'style-src-elem': ["'self'", "'unsafe-inline'"],
-				'img-src': ['*'],
-				'connect-src': ["'self'", 'https://tame-red-clownfish-tutu.cyclic.app'],
-			},
-		},
-	}),
-);
+app.use(helmetMiddleware);
 app.use(morgan('dev'));
 app.use(compression());
 app.use(cookieParser());
