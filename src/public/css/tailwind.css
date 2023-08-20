@@ -35,7 +35,7 @@
 }
 
 .c-main-area {
-	@apply bg-white p-4 md:p-8 shadow-md mx-4 rounded;
+	@apply bg-white p-4 md:p-8 shadow-md mx-2 md:mx-4 rounded;
 }
 
 .c-tab {
@@ -43,7 +43,7 @@
 }
 
 .c-tab.active {
-	@apply border-b-4 border-solid border-b-teal-600 bg-gray-300;
+	@apply border-solid border-l-4 border-l-teal-600 md:border-l-0 md:border-b-4 md:border-b-teal-600 bg-gray-300;
 }
 
 .c-tab-content {

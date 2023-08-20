@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-	content: ['./src/views/**/*.ejs', './src/public/**/*.js'],
+	content: ['./src/views/**/*.ejs', './src/public/**/*.js', './src/config/constants.ts'],
 	theme: {
 		extend: {
 			borderWidth: {

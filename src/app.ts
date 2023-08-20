@@ -13,6 +13,7 @@ import { helmetMiddleware } from '@config/helmet';
 const app: Express = express();
 
 // Express configuration
+app.enable('trust proxy');
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(helmetMiddleware);
